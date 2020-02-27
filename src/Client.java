@@ -68,7 +68,6 @@ public class Client {
   String user;
   String host;
   int port;
-
   boolean printSplash = true;
 
   Client() {
@@ -152,7 +151,7 @@ public class Client {
       }
       // Trim leading/trailing white space, and split words according to spaces
       List<String> split = Arrays.stream(raw.trim().split("\\ "))
-          .map(x -> x.trim()).collect(Collectors.toList());
+              .map(x -> x.trim()).collect(Collectors.toList());
       String cmd = split.remove(0);  // First word is the command keyword
       String[] rawArgs = split.toArray(new String[split.size()]);
       // Remainder, if any, are arguments
