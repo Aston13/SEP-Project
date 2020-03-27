@@ -1,4 +1,7 @@
+package sep.coursework;
 
+
+import sep.coursework.CLFormatter;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.BufferedReader;
 import java.io.IOException;

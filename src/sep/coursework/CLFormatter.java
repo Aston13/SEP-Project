@@ -1,3 +1,5 @@
+package sep.coursework;
+
 
 import java.io.IOException;
 import java.util.Iterator;
