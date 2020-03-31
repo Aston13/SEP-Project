@@ -3,30 +3,39 @@ package sep.coursework;
 import java.util.HashMap;
 
 /* In charge of intialising commands in the map and getting commands */
-
 public class CommandWords {
-    private HashMap<String, Command> commands = new HashMap<>();
-    
-    public CommandWords() {
-        
-        ExitCommand exit = new ExitCommand();
-        Command
-        
-        exit.register("exit", execute);
-        
-        commands.put("exit", new ExitCommand());
-        commands.put("send", new SendCommand());   
 
-//         Second argument to command
-//        commands.put("fetch", new FetchCommand());
-//        commands.put("compose", new ComposeCommand());
-//        commands.put("body", new BodyCommand());
+    private final HashMap<String, Command> mainCommands = new HashMap<>();
+    private final HashMap<String, Command> draftCommands = new HashMap<>();
+
+    public CommandWords() {
+
+        state = "main"; // State is always initialised as main.
         
+        // Initialise main state commands.
+        mainCommands.put("exit", new ExitCommand());
+        mainCommands.put("fetch", new FetchCommand());
+        mainCommands.put("list", new ListCommand());
+        mainCommands.put("compose", new ComposeCommand());
         
-//         Additional Functionality
-//        commands.put("discard", new DiscardCommand());
-//        commands.put("list", new ListCommand());
+        // Initialise drafting state commands.
+        draftCommands.put("exit", new ExitCommand());
+        draftCommands.put("send", new SendCommand());
+        draftCommands.put("discard", new DiscardCommand());
+        draftCommands.put("body", new BodyCommand());
+        
+        //         Additional Functionality
+        //        commands.put("undo", new UndoCommand());
     }
     
+    public boolean getState() {
+        
+    }
     
+
+    
+    public Command get(String cmd) {
+        return commands.get(cmd);
+    }
+
 }
