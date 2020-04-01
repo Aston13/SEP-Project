@@ -21,8 +21,8 @@ public class Client {
     private final String host;
     private final int port;
     private final boolean printSplash;
-    private CommandWords command;
-    private ClientChannel channel;
+    private CommandWords commandWords;
+    
 
     /* Must accept the same arguments as current. 
      * User name, host name and port number.
@@ -41,7 +41,7 @@ public class Client {
         this.host = host;
         this.port = port;
         this.printSplash = true;
-        this.channel = new ClientChannel(host, port);
+        commandWords = new CommandWords(new ClientChannel(host, port));
     }
 
     // Run the client
@@ -56,7 +56,7 @@ public class Client {
         try {
             if (user.isEmpty() || host.isEmpty()) {
                 System.err.println("User/host has not been set.");
-                command.get("exit");
+                commandWords.get("exit");
             }
 
             if (printSplash == true) {
@@ -85,58 +85,58 @@ public class Client {
     public void loop(BufferedReader reader) throws IOException,
             ClassNotFoundException {
 
-//        // The app is in one of two states: "Main" or "Drafting"
-//        String state = "Main";  // Initial state
+       // The app is in one of two states: "Main" or "Drafting"
+        String activeState = "Main";  // Initial state
         // Holds the current draft data when in the "Drafting" state
         String draftTopic = null;
         List<String> draftLines = new LinkedList<>();
+        
+        String userInput = reader.readLine();
+        String userCommand = getUserCommand(userInput);
+        String  [] userArgument = getUserArguments(userInput);
 
         // The loop
         while (true) {
-
-            // Print user options
-            if (state.equals("Main")) {
-                System.out.print(helper.formatMainMenuPrompt());
-            } else {  // state = "Drafting"
-                System.out.print(helper.
-                        formatDraftingMenuPrompt(draftTopic, draftLines));
+            switch (activeState){
+                case ("Main"):
+                    System.out.print( "\n[Main] Enter command: "
+                    + "fetch [mytopic], "
+                    + "compose [mytopic], "
+                    + "exit"
+                    + "\n> ");
+                    
+                case ("Drafting"):
+                    //System.out.print(helper.
+                        //formatDraftingMenuPrompt(null, draftLines));
+                    
+                    
             }
 
-            // Read a line of user input
-            String raw = reader.readLine();
-            if (raw == null) {
-                throw new IOException("Input stream closed while reading.");
-            }
-            // Trim leading/trailing white space, and split words according to spaces
-            List<String> split = Arrays.stream(raw.trim().split("\\ "))
-                    .map(x -> x.trim()).collect(Collectors.toList());
-            String cmd = split.remove(0);  // First word is the command keyword
-            String[] rawArgs = split.toArray(new String[split.size()]);
-            // Remainder, if any, are arguments
+     
+            commandWords.get(userCommand, userArgument);
 
-            // Process user input
-            if (cmd.startsWith("exit")) {
-                // exit command applies in either state
-                command.get("exit");
-            } 
+
 
 
 
 
 // "Main" state commands
-            else if (state.equals("Main")) {
+            if (state.equals("Main")) {
                 if ("compose".startsWith(cmd)) {
                     // Switch to "Drafting" state and start a new "draft"
                     state = "Drafting";
                     draftTopic = rawArgs[0];
-                } else if ("fetch".startsWith(cmd)) {
-                    // Fetch seets from server
-                    channel.send(new SeetsReq(rawArgs[0]));
-                    SeetsReply rep = (SeetsReply) channel.receive();
-                    System.out.print(
-                            helper.formatFetched(rawArgs[0], rep.users, rep.lines));
+//                } else if ("fetch".startsWith(cmd)) {
+//                    
+//                    // Fetch seets from server
+//                    commandWords.get("fetch");
+//                    channel.send(new SeetsReq(rawArgs[0]));
+//                    SeetsReply rep = (SeetsReply) channel.receive();
+//                    
+//                    System.out.print(
+//                            helper.formatFetched(rawArgs[0], rep.users, rep.lines));
                 } else {
-                    System.out.println("Could not parse command/args.");
+                    System.out.println("Main: Not fetch or compose. Could not parse command/args.");
                 }
             } 
 
@@ -147,24 +147,75 @@ public class Client {
 // "Drafting" state commands
             else if (state.equals("Drafting")) {
                 if ("body".startsWith(cmd)) {
+                    
                     // Add a seet body line
                     String line = Arrays.stream(rawArgs).
                             collect(Collectors.joining());
                     draftLines.add(line);
+                    
                 } else if ("send".startsWith(cmd)) {
+                    
                     // Send drafted seets to the server, and go back to "Main" state
                     channel.send(new Publish(user, draftTopic, draftLines));
+                    
+                    
+                    
                     state = "Main";
                     draftTopic = null;
+                    
                 } else {
-                    System.out.println("Could not parse command/args.");
+                    System.out.println("Failed Send. Could not parse command/args.");
                 }
+                
             } else {
-                System.out.println("Could not parse command/args.");
+                System.out.println("Not equal to Drafting or Main . Could not parse command/args.");
             }
             
             
             
         }
     }
+    
+    public void mainState() {
+        
+    }
+    
+    public void draftingState() {
+        
+    }
+    
+    public String getUserCommand (String userInput) {
+            String command = null;
+            
+            // Read a line of user input
+            if (userInput != null) {
+                
+                // Trim leading/trailing white space, and split words according to spaces
+                List<String> split = Arrays.stream(userInput.trim().split("\\ "))
+                    .map(x -> x.trim()).collect(Collectors.toList());
+                
+                command = split.remove(0);
+            }
+            
+            return command;
+    }
+    
+    public String[] getUserArguments (String userInput) {
+            String [] arguments = null;
+        
+            if (userInput != null) {
+                
+                // Trim leading/trailing white space, and split words according to spaces
+                List<String> split = Arrays.stream(userInput.trim().split("\\ "))
+                    .map(x -> x.trim()).collect(Collectors.toList());
+                
+                split.remove(0);
+                
+                arguments = split.toArray(new String[split.size()]);
+            }
+            
+            return arguments;
+        
+    }
+    
 }

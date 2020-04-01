@@ -13,15 +13,15 @@ public class CLFormatter {
     CLFormatter(String host, int port) {
     }
 
-    /* Following are the auxiliary methods for formatting the UI text */
-    static String formatMainMenuPrompt() {
-
-        return "\n[Main] Enter command: "
-                + "fetch [mytopic], "
-                + "compose [mytopic], "
-                + "exit"
-                + "\n> ";
-    }
+//    /* Following are the auxiliary methods for formatting the UI text */
+//    static String formatMainMenuPrompt() {
+//
+//        return "\n[Main] Enter command: "
+//                + "fetch [mytopic], "
+//                + "compose [mytopic], "
+//                + "exit"
+//                + "\n> ";
+//    }
 
     static String formatDraftingMenuPrompt(String topic,
             List<String> lines) {
