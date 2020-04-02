@@ -70,7 +70,6 @@ public class Client {
                     invoker = new Invoker(c);
                     invoker.invoke();
                 }
-                
             }
 
             if (printSplash == true) {
@@ -101,13 +100,15 @@ public class Client {
 
        // The app is in one of two states: "Main" or "Drafting"
         String activeState = "Main";  // Initial state
+        
         // Holds the current draft data when in the "Drafting" state
         String draftTopic = null;
         List<String> draftLines = new LinkedList<>();
+        
+        
         String userInput;
         Command c;
 
-        // The loop
         while (true) {
             
             switch (activeState){
@@ -120,78 +121,23 @@ public class Client {
                     
                 case ("Drafting"):
                     //System.out.print(helper.
-                        //formatDraftingMenuPrompt(null, draftLines));
-                    
-                    
+                        //formatDraftingMenuPrompt(null, draftLines));   
             }
 
-     
+            // Gets the users next input line.
             userInput = reader.readLine();
             c = parser.getCommand(userInput);
-            if (c != null) {
+            
+            // Checks if the user entered a valid command and invokes it if true.
+            if (parser.isCommandValid(userInput)){ // Pass in state here?
+                c = parser.getCommand(userInput);
                 invoker = new Invoker(c);
                 invoker.invoke();
+                
+                //System.out.println(receiver.getUserMessage(););
             } else {
                 System.out.println("Command not recognised.");
-            }
-
-
-
-
-
-
-//// "Main" state commands
-//            if (state.equals("Main")) {
-//                if ("compose".startsWith(cmd)) {
-//                    // Switch to "Drafting" state and start a new "draft"
-//                    state = "Drafting";
-//                    draftTopic = rawArgs[0];
-////                } else if ("fetch".startsWith(cmd)) {
-////                    
-////                    // Fetch seets from server
-////                    commandWords.get("fetch");
-////                    channel.send(new SeetsReq(rawArgs[0]));
-////                    SeetsReply rep = (SeetsReply) channel.receive();
-////                    
-////                    System.out.print(
-////                            helper.formatFetched(rawArgs[0], rep.users, rep.lines));
-//                } else {
-//                    System.out.println("Main: Not fetch or compose. Could not parse command/args.");
-//                }
-//            } 
-
-
-
-
-
-//// "Drafting" state commands
-//            else if (state.equals("Drafting")) {
-//                if ("body".startsWith(cmd)) {
-//                    
-//                    // Add a seet body line
-//                    String line = Arrays.stream(rawArgs).
-//                            collect(Collectors.joining());
-//                    draftLines.add(line);
-//                    
-//                } else if ("send".startsWith(cmd)) {
-//                    
-//                    // Send drafted seets to the server, and go back to "Main" state
-//                    channel.send(new Publish(user, draftTopic, draftLines));
-//                    
-//                    
-//                    
-//                    state = "Main";
-//                    draftTopic = null;
-//                    
-//                } else {
-//                    System.out.println("Failed Send. Could not parse command/args.");
-//                }
-//                
-//            } else {
-//                System.out.println("Not equal to Drafting or Main . Could not parse command/args.");
-//            }
-            
-            
+            }   
             
         }
     }
