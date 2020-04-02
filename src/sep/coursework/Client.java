@@ -11,8 +11,6 @@ import java.util.stream.Collectors;
 import sep.seeter.net.channel.ClientChannel;
 import sep.seeter.net.message.Bye;
 import sep.seeter.net.message.Publish;
-import sep.seeter.net.message.SeetsReply;
-import sep.seeter.net.message.SeetsReq;
 
 // Must remain the main class for running the client (via main()).
 public class Client {
@@ -21,7 +19,12 @@ public class Client {
     private final String host;
     private final int port;
     private final boolean printSplash;
-    private CommandWords commandWords;
+    private Parser parser;
+    
+    private ClientChannel channel;
+    private Invoker invoker;
+    private Receiver receiver;
+
     
 
     /* Must accept the same arguments as current. 
@@ -41,7 +44,12 @@ public class Client {
         this.host = host;
         this.port = port;
         this.printSplash = true;
-        commandWords = new CommandWords(new ClientChannel(host, port));
+        channel = new ClientChannel(host, port);
+        
+        receiver = new SeetsReceiver(channel);
+        parser = new Parser(receiver);
+        
+        
     }
 
     // Run the client
@@ -56,7 +64,13 @@ public class Client {
         try {
             if (user.isEmpty() || host.isEmpty()) {
                 System.err.println("User/host has not been set.");
-                commandWords.get("exit");
+                
+                Command c = parser.getCommand("exit");
+                if (c != null) {
+                    invoker = new Invoker(c);
+                    invoker.invoke();
+                }
+                
             }
 
             if (printSplash == true) {
@@ -90,13 +104,12 @@ public class Client {
         // Holds the current draft data when in the "Drafting" state
         String draftTopic = null;
         List<String> draftLines = new LinkedList<>();
-        
-        String userInput = reader.readLine();
-        String userCommand = getUserCommand(userInput);
-        String  [] userArgument = getUserArguments(userInput);
+        String userInput;
+        Command c;
 
         // The loop
         while (true) {
+            
             switch (activeState){
                 case ("Main"):
                     System.out.print( "\n[Main] Enter command: "
@@ -113,109 +126,77 @@ public class Client {
             }
 
      
-            commandWords.get(userCommand, userArgument);
-
-
-
-
-
-
-// "Main" state commands
-            if (state.equals("Main")) {
-                if ("compose".startsWith(cmd)) {
-                    // Switch to "Drafting" state and start a new "draft"
-                    state = "Drafting";
-                    draftTopic = rawArgs[0];
-//                } else if ("fetch".startsWith(cmd)) {
-//                    
-//                    // Fetch seets from server
-//                    commandWords.get("fetch");
-//                    channel.send(new SeetsReq(rawArgs[0]));
-//                    SeetsReply rep = (SeetsReply) channel.receive();
-//                    
-//                    System.out.print(
-//                            helper.formatFetched(rawArgs[0], rep.users, rep.lines));
-                } else {
-                    System.out.println("Main: Not fetch or compose. Could not parse command/args.");
-                }
-            } 
-
-
-
-
-
-// "Drafting" state commands
-            else if (state.equals("Drafting")) {
-                if ("body".startsWith(cmd)) {
-                    
-                    // Add a seet body line
-                    String line = Arrays.stream(rawArgs).
-                            collect(Collectors.joining());
-                    draftLines.add(line);
-                    
-                } else if ("send".startsWith(cmd)) {
-                    
-                    // Send drafted seets to the server, and go back to "Main" state
-                    channel.send(new Publish(user, draftTopic, draftLines));
-                    
-                    
-                    
-                    state = "Main";
-                    draftTopic = null;
-                    
-                } else {
-                    System.out.println("Failed Send. Could not parse command/args.");
-                }
-                
+            userInput = reader.readLine();
+            c = parser.getCommand(userInput);
+            if (c != null) {
+                invoker = new Invoker(c);
+                invoker.invoke();
             } else {
-                System.out.println("Not equal to Drafting or Main . Could not parse command/args.");
+                System.out.println("Command not recognised.");
             }
+
+
+
+
+
+
+//// "Main" state commands
+//            if (state.equals("Main")) {
+//                if ("compose".startsWith(cmd)) {
+//                    // Switch to "Drafting" state and start a new "draft"
+//                    state = "Drafting";
+//                    draftTopic = rawArgs[0];
+////                } else if ("fetch".startsWith(cmd)) {
+////                    
+////                    // Fetch seets from server
+////                    commandWords.get("fetch");
+////                    channel.send(new SeetsReq(rawArgs[0]));
+////                    SeetsReply rep = (SeetsReply) channel.receive();
+////                    
+////                    System.out.print(
+////                            helper.formatFetched(rawArgs[0], rep.users, rep.lines));
+//                } else {
+//                    System.out.println("Main: Not fetch or compose. Could not parse command/args.");
+//                }
+//            } 
+
+
+
+
+
+//// "Drafting" state commands
+//            else if (state.equals("Drafting")) {
+//                if ("body".startsWith(cmd)) {
+//                    
+//                    // Add a seet body line
+//                    String line = Arrays.stream(rawArgs).
+//                            collect(Collectors.joining());
+//                    draftLines.add(line);
+//                    
+//                } else if ("send".startsWith(cmd)) {
+//                    
+//                    // Send drafted seets to the server, and go back to "Main" state
+//                    channel.send(new Publish(user, draftTopic, draftLines));
+//                    
+//                    
+//                    
+//                    state = "Main";
+//                    draftTopic = null;
+//                    
+//                } else {
+//                    System.out.println("Failed Send. Could not parse command/args.");
+//                }
+//                
+//            } else {
+//                System.out.println("Not equal to Drafting or Main . Could not parse command/args.");
+//            }
             
             
             
         }
     }
+
     
-    public void mainState() {
-        
-    }
-    
-    public void draftingState() {
-        
-    }
-    
-    public String getUserCommand (String userInput) {
-            String command = null;
-            
-            // Read a line of user input
-            if (userInput != null) {
-                
-                // Trim leading/trailing white space, and split words according to spaces
-                List<String> split = Arrays.stream(userInput.trim().split("\\ "))
-                    .map(x -> x.trim()).collect(Collectors.toList());
-                
-                command = split.remove(0);
-            }
-            
-            return command;
-    }
-    
-    public String[] getUserArguments (String userInput) {
-            String [] arguments = null;
-        
-            if (userInput != null) {
-                
-                // Trim leading/trailing white space, and split words according to spaces
-                List<String> split = Arrays.stream(userInput.trim().split("\\ "))
-                    .map(x -> x.trim()).collect(Collectors.toList());
-                
-                split.remove(0);
-                
-                arguments = split.toArray(new String[split.size()]);
-            }
-            
-            return arguments;
-        
-    }
+
     
 }

@@ -1,68 +1,44 @@
 package sep.coursework;
 
-import java.io.IOException;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import sep.seeter.net.channel.ClientChannel;
+import java.util.List;
 import sep.seeter.net.message.SeetsReply;
 import sep.seeter.net.message.SeetsReq;
 
+/**
+ *
+ * @author Aston Turner
+ */
 public class FetchCommand implements Command {
-
-    private final ClientChannel channel;
-    private SeetsReply reply;
-    private String [] arguments;
-    private String topic;
-    private String formattedString;
     
-    public FetchCommand(ClientChannel channel) {
-        this.channel = channel;
+    Receiver theReceiver;
+    String topic;
+    
+    public FetchCommand(Receiver newReciever, String topic) {
+        theReceiver = newReciever;
+        this.topic = topic;
     }
 
     @Override
     public void execute() {
-        try {
-            channel.send(new SeetsReq(topic));
-        } catch (IOException ex) {
-            Logger.getLogger(FetchCommand.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            reply = (SeetsReply) channel.receive();
-        } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(FetchCommand.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        formatFetched();
+          theReceiver.send(new SeetsReq(topic));
+          SeetsReply rep = (SeetsReply) theReceiver.receive();
+          System.out.print(formatFetched(topic, rep.users, rep.lines));
     }
     
-    @Override
-    public void setArgs(String[] arguments) {
-        this.arguments = arguments;
-        topic = arguments[0];
-    }
-    
-    private void formatFetched() {
+  String formatFetched(String topic, List<String> users,
+      List<String> fetched) {
         StringBuilder b = new StringBuilder("Fetched: #");
         b.append(topic);
-        Iterator<String> it = reply.lines.iterator();
-        for (String user : reply.users) {
-            b.append("\n");
-            b.append(String.format("%12s", user));
-            b.append("  ");
-            b.append(it.next());
+        Iterator<String> it = fetched.iterator();
+        for (String user : users) {
+          b.append("\n");
+          b.append(String.format("%12s", user));
+          b.append("  ");
+          b.append(it.next());
         };
         b.append("\n");
-        
-        formattedString = b.toString();
-    }
-    
-    public String getMessage(){
-        return formattedString;
-    }
+        return b.toString();
+  }
 
-    @Override
-    public boolean requiresArgs() {
-        return true;
-    }
 }

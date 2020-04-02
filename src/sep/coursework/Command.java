@@ -1,8 +1,9 @@
 package sep.coursework;
 
+/* Every Command must implement this interface */ 
 public interface Command {
-    public void execute(); // Could be boolean.
-    //public void saveCommandHistory();
-    public boolean requiresArgs();
-    public void setArgs(String [] args);
+    
+    public void execute();
+    //public void undo();
+    
 }
