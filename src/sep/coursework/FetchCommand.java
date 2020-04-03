@@ -12,10 +12,10 @@ import sep.seeter.net.message.SeetsReq;
  */
 public class FetchCommand implements Command {
     
-    Receiver theReceiver;
+    ServerReceiver theReceiver;
     String topic;
     
-    public FetchCommand(Receiver newReceiver, String newTopic) {
+    public FetchCommand(ServerReceiver newReceiver, String newTopic) {
         theReceiver = newReceiver;
         this.topic = newTopic;
     }

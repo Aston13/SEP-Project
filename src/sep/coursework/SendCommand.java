@@ -8,19 +8,24 @@ import sep.seeter.net.message.Publish;
  */
 public class SendCommand implements Command {
 
-    Receiver theReceiver;
-    Publish completedDraft;
+    private ServerReceiver serverReceiver;
+    private DraftReceiver draftReceiver;
+    private Publish publishDraft;
+    private String user;
+
     
-    public SendCommand(Receiver newReceiver, Publish completedDraft) {
-       theReceiver = newReceiver;
-       this.completedDraft = completedDraft;
+    public SendCommand(ServerReceiver serverReceiver,
+            DraftReceiver draftReceiver) {
+       this.serverReceiver = serverReceiver;
+       this.draftReceiver = draftReceiver;
+       user = serverReceiver.getUser();
+       
     }
     
     @Override
     public void execute() {
-        theReceiver.send(completedDraft);
-        // Change state back to main.
-        // Clear draftTopic in DraftCommand.
+        publishDraft = draftReceiver.getPublish(user);
+        serverReceiver.send(publishDraft);
     }
 
 }

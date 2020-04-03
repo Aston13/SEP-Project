@@ -1,8 +1,6 @@
 package sep.coursework;
 
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -11,21 +9,18 @@ import java.util.stream.Collectors;
  */
 public class BodyCommand implements Command {
     
-    String draftTopic;
-    List <String> draftLines;
-    String line;
-    String [] arguments;
+    private DraftReceiver draftReceiver;
+    private String line;
             
-    public BodyCommand(String newDraftTopic, String [] arguments) {
-        draftTopic = newDraftTopic;
-        draftLines = new LinkedList<>();
+    public BodyCommand(DraftReceiver draftReceiver, String []arguments) {
+        this.draftReceiver = draftReceiver;
+        line = Arrays.stream(arguments).
+              collect(Collectors.joining());
     }
     
     @Override
     public void execute() {
-        line = Arrays.stream(arguments).collect(Collectors.joining());
-        
-        draftLines.add(line);
+        draftReceiver.addDraftLine(line);
     }
 
 }
