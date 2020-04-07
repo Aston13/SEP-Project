@@ -2,7 +2,6 @@ package sep.coursework;
 
 import java.util.Iterator;
 import java.util.List;
-import sep.seeter.net.message.Message;
 import sep.seeter.net.message.SeetsReply;
 import sep.seeter.net.message.SeetsReq;
 
@@ -12,37 +11,38 @@ import sep.seeter.net.message.SeetsReq;
  */
 public class FetchCommand implements Command {
     
-    ServerReceiver theReceiver;
-    String topic;
+    private final Model model;
+    private final String topic;
     
-    public FetchCommand(ServerReceiver newReceiver, String newTopic) {
-        theReceiver = newReceiver;
-        this.topic = newTopic;
+    public FetchCommand(Model newModel, String newTopic) {
+        model = newModel;
+        topic = newTopic;
     }
 
     @Override
     public void execute() {
         if (topic != null) {
-          theReceiver.send(new SeetsReq(topic));
-          SeetsReply rep = (SeetsReply) theReceiver.receive();
+          model.send(new SeetsReq(topic));
+          SeetsReply rep = (SeetsReply) model.receive();
           System.out.print(formatFetched(topic, rep.users, rep.lines));
         } else {
-            System.out.println("Topic required");
-            //theReceiver.setUserMessage("Topic Required");
+            System.out.println("The fetch command requires a topic.");
         }
     }
     
-  String formatFetched(String topic, List<String> users,
+  public String formatFetched(String topic, List<String> users,
       List<String> fetched) {
         StringBuilder b = new StringBuilder("Fetched: #");
         b.append(topic);
         Iterator<String> it = fetched.iterator();
+        
         for (String user : users) {
-          b.append("\n");
-          b.append(String.format("%12s", user));
-          b.append("  ");
-          b.append(it.next());
-        };
+            b.append("\n");
+            b.append(String.format("%12s", user));
+            b.append("  ");
+            b.append(it.next());
+        }
+        
         b.append("\n");
         return b.toString();
   }

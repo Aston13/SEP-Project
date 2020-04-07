@@ -8,24 +8,18 @@ import sep.seeter.net.message.Publish;
  */
 public class SendCommand implements Command {
 
-    private ServerReceiver serverReceiver;
-    private DraftReceiver draftReceiver;
+    private final Model model;
     private Publish publishDraft;
-    private String user;
-
     
-    public SendCommand(ServerReceiver serverReceiver,
-            DraftReceiver draftReceiver) {
-       this.serverReceiver = serverReceiver;
-       this.draftReceiver = draftReceiver;
-       user = serverReceiver.getUser();
+    public SendCommand(Model newModel) {
+       model = newModel;
        
     }
     
     @Override
     public void execute() {
-        publishDraft = draftReceiver.getPublish(user);
-        serverReceiver.send(publishDraft);
+        model.send(publishDraft);
+        model.changeState();
     }
 
 }

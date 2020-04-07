@@ -9,18 +9,18 @@ import java.util.stream.Collectors;
  */
 public class BodyCommand implements Command {
     
-    private DraftReceiver draftReceiver;
-    private String line;
+    private final Model model;
+    private final String line;
             
-    public BodyCommand(DraftReceiver draftReceiver, String []arguments) {
-        this.draftReceiver = draftReceiver;
+    public BodyCommand(Model newModel, String []arguments) {
+        model = newModel;
         line = Arrays.stream(arguments).
               collect(Collectors.joining());
     }
     
     @Override
     public void execute() {
-        draftReceiver.addDraftLine(line);
+        model.addDraftLine(line);
     }
 
 }

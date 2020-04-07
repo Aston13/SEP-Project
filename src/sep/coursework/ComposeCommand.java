@@ -6,11 +6,11 @@ package sep.coursework;
  */
 public class ComposeCommand implements Command {
     
-    private DraftReceiver draftReceiver;
-    private String topic;
+    private final Model model;
+    private final String topic;
 
-    public ComposeCommand(DraftReceiver newDraftReceiver, String newTopic) {
-        draftReceiver = newDraftReceiver;
+    public ComposeCommand(Model newModel, String newTopic) {
+        model = newModel;
         topic = newTopic;
     }
     
@@ -19,8 +19,9 @@ public class ComposeCommand implements Command {
         if (topic == null) {
             System.out.println("Enter a topic to compose");
         } else {
-            draftReceiver.setDraftTopic(topic);
-            System.out.println(draftReceiver.getDraftingOutput());
+            model.setDraftTopic(topic);
+            System.out.println(model.getDraftingOutput());
+            model.changeState();
         } 
     }
 }
