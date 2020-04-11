@@ -79,6 +79,9 @@ public final class Controller {
     public boolean isCommandValid(String userInput) {
         State state = getModel().getState();
         extractInput(userInput);
+        if ((commandWord == null) || (commandWord.trim().isEmpty())){
+            return false;
+        }
         List stateCommandList = state.getCommands();
         
         for (Object cmd : stateCommandList) {

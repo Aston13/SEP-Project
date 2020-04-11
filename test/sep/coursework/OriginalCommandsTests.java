@@ -12,7 +12,17 @@ import sep.seeter.server.Server;
  */
 public class OriginalCommandsTests extends TestSuite {
 
-    Thread myThread;
+    private Thread myThread;
+    
+    @Test
+    public void emptyInputCommand() throws IOException {
+        String expectedOutput = "> Could not parse command/args.";
+        
+        provideInput("  \rexit");
+        Client.main(new String[] {"foo", "bar", "8888"});
+        
+        assertEquals(expectedOutput, (getOutLine(6)));
+    }
     
     @Test
     public void invalidCommand() throws IOException {
