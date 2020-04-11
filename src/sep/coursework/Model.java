@@ -37,7 +37,7 @@ public class Model {
     /*
      * Server interaction related methods.
      */
-    public void send(Message msg) {
+    public void send(Message msg) throws IOException {
         try {
             channel.send(msg);
         } catch (IOException ex) {
@@ -45,16 +45,12 @@ public class Model {
         }
     }
 
-    public Message receive() {
-        Message reply = null;
-        
-        try {
-            reply = channel.receive();
-        } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
-        }
-            
-        return reply;
+    public Message receive() throws IOException, ClassNotFoundException {  
+        return channel.receive();
+    }
+    
+    public boolean isServerOpen() {
+        return channel.isOpen();
     }
     
     public String getUser() {

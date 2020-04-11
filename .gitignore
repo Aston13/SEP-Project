@@ -1,3 +1,7 @@
 /nbproject/private/
 /build/
 /dist/
+tests/clientTest.java
+tests/clientTest.java
+tests/commands.java
+tests/Suite.java

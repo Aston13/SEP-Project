@@ -1,5 +1,8 @@
 package sep.coursework;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import sep.seeter.net.message.Publish;
 
 /**
@@ -9,17 +12,18 @@ import sep.seeter.net.message.Publish;
 public class SendCommand implements Command {
 
     private final Model model;
-    private Publish publishDraft;
     
     public SendCommand(Model newModel) {
        model = newModel;
-       
     }
     
     @Override
     public void execute() {
-        model.send(publishDraft);
-        model.changeState();
+        try {
+            model.send(model.getPublish());
+            model.changeState();
+        } catch (IOException ex) {
+            Logger.getLogger(SendCommand.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-
 }

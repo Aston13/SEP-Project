@@ -10,7 +10,7 @@ import org.junit.Test;
  *
  * @author Aston Turner <16052488 @ herts.ac.uk>
  */
-public class ClientTest extends TestSuite {
+public class ClientTests extends TestSuite {
 
     @Test
     public void exit() throws UnsupportedEncodingException, IOException {

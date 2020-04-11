@@ -1,7 +1,10 @@
 package sep.coursework;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import sep.seeter.net.message.SeetsReply;
 import sep.seeter.net.message.SeetsReq;
 
@@ -22,9 +25,13 @@ public class FetchCommand implements Command {
     @Override
     public void execute() {
         if (topic != null) {
-          model.send(new SeetsReq(topic));
-          SeetsReply rep = (SeetsReply) model.receive();
-          System.out.print(formatFetched(topic, rep.users, rep.lines));
+            try {
+                model.send(new SeetsReq(topic));
+                SeetsReply rep = (SeetsReply) model.receive();
+                System.out.print(formatFetched(topic, rep.users, rep.lines));
+            } catch (IOException | ClassNotFoundException ex) {
+                Logger.getLogger(FetchCommand.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             System.out.println("The fetch command requires a topic.");
         }
