@@ -2,6 +2,7 @@ package sep.coursework;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
+import sep.seeter.net.message.Message;
 
 /**
  *
@@ -20,7 +21,18 @@ public class BodyCommand implements Command {
     
     @Override
     public void execute() {
-        model.addDraftLine(line);
+        if (isBodyValid()) {
+            model.addDraftLine(line);
+        }
     }
-
+    
+    public boolean isBodyValid() {
+        try {
+            Message.isValidBody(line);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
 }

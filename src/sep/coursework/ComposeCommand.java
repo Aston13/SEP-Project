@@ -1,5 +1,7 @@
 package sep.coursework;
 
+import sep.seeter.net.message.Message;
+
 /**
  *
  * @author Aston Turner
@@ -16,12 +18,24 @@ public class ComposeCommand implements Command {
     
     @Override
     public void execute() {
+        
         if (topic == null) {
-            System.out.println("Enter a topic to compose");
+            isTopicValid("");
         } else {
-            model.setDraftTopic(topic);
-            System.out.println(model.getDraftingOutput());
-            model.changeState();
-        } 
+            if (isTopicValid(topic)) {
+                model.setDraftTopic(topic);
+                model.changeState();
+            }
+        }
+    }
+    
+    public boolean isTopicValid(String topicName) {
+        try {
+            Message.isValidTopic(topicName);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
     }
 }

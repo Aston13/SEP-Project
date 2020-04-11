@@ -41,10 +41,12 @@ public final class Controller {
         mainCommands.add("exit");
         mainCommands.add("fetch");
         mainCommands.add("compose");
+        mainCommands.add("list");
         
         draftCommands.add("exit");
         draftCommands.add("send");
         draftCommands.add("body");
+        draftCommands.add("discard");
         
         State.MAIN.addCommands(mainCommands);
         State.DRAFTING.addCommands(draftCommands);
@@ -113,6 +115,12 @@ public final class Controller {
                     break;
                 case ("send"):
                     command = new SendCommand(model);
+                    break;
+                case ("discard"):
+                    command = new DiscardCommand(model);
+                    break;
+                case ("list"):
+                    command = new ListCommand(model);
                     break;
             }
             

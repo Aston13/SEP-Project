@@ -3,7 +3,6 @@ package sep.coursework;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import sep.seeter.net.message.Publish;
 
 /**
  *
@@ -21,6 +20,7 @@ public class SendCommand implements Command {
     public void execute() {
         try {
             model.send(model.getPublish());
+            model.resetDraftLines();
             model.changeState();
         } catch (IOException ex) {
             Logger.getLogger(SendCommand.class.getName()).log(Level.SEVERE, null, ex);

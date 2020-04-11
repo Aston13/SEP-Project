@@ -21,7 +21,7 @@ public class Model {
     private final String user;
     private final String host;
     private String draftTopic;
-    private final List<String> draftLines;
+    private List<String> draftLines;
     private Publish publish;
     private State state;
     
@@ -61,7 +61,18 @@ public class Model {
      * IO related methods.
      */
     public boolean validParameters() {
-        if (user.isEmpty() || host.isEmpty()) {return false;}
+        if (user.isEmpty()) {
+            try {
+                Message.isValidUserId(user);
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+                return false;
+            }
+        } else if (host.isEmpty()) {
+            System.out.println("Host not set.");
+            return false;
+        }
+        
         return true;
     }
     
@@ -87,6 +98,10 @@ public class Model {
             }
             
         return b.toString();
+    }
+    
+    public void resetDraftLines() {
+        draftLines.clear();
     }
     
     public void addDraftLine(String line) {

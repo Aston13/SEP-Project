@@ -81,14 +81,14 @@ public class OriginalCommandsTests extends TestSuite {
         
         Client.main(new String[] {"foo", "bar", "8888"});
         server.close();
-        boolean expected = (getOutLine(18).startsWith("[Main]"));
+        boolean expected = (getOutLine(14).startsWith("[Main]"));
         
         assertEquals(expected, true);
     }
     
     @Test
     public void composeEmpty() throws IOException {
-        String expectedOutput = "> Enter a topic to compose";
+        String expectedOutput = "> Topic name should be non-empty and not longer than 8 characters.";
         
         provideInput("compose\nexit");
         Client.main(new String[] {"foo", "bar", "8888"});
@@ -113,6 +113,6 @@ public class OriginalCommandsTests extends TestSuite {
         provideInput("compose mytop\nbody first line\nexit");
         Client.main(new String[] {"foo", "bar", "8888"});
         
-        assertEquals(expectedOutput, (getOutLine(15)));
+        assertEquals(expectedOutput, (getOutLine(11)));
     }
 }
