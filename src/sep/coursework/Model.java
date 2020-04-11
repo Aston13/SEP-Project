@@ -108,6 +108,15 @@ public class Model {
         draftLines.add(line);
     }
     
+    public String removeDraftLine() {
+        if (!draftLines.isEmpty()) {
+            draftLines.remove(draftLines.size()-1);
+            return "Line removed.";
+        } else {
+            return "No existing lines to remove.";
+        }
+    }
+    
     public void setDraftTopic(String newTopic) {
         draftTopic = newTopic;
     }

@@ -26,4 +26,9 @@ public class SendCommand implements Command {
             Logger.getLogger(SendCommand.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    @Override
+    public void undo() {
+        System.out.println("Can't undo the previous send command.");
+    }
 }

@@ -3,6 +3,7 @@ package sep.coursework;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
 /* In charge of intialising commands in a List and returning Command objects */
@@ -13,6 +14,7 @@ public final class Controller {
     private String [] arguments = null;
     private String argument = null;
     private String commandWord = null;
+    private Stack commandHistory = new Stack <Command>();
     
     public Controller(Model newModel, View newView) {
         addCommandWords();
@@ -38,11 +40,13 @@ public final class Controller {
         List<String> mainCommands = new ArrayList<>();
         List<String> draftCommands = new ArrayList<>();
         
+        mainCommands.add("undo");
         mainCommands.add("exit");
         mainCommands.add("fetch");
         mainCommands.add("compose");
         mainCommands.add("list");
         
+        draftCommands.add("undo");
         draftCommands.add("exit");
         draftCommands.add("send");
         draftCommands.add("body");
@@ -122,10 +126,19 @@ public final class Controller {
                 case ("list"):
                     command = new ListCommand(model);
                     break;
+                case("undo"):
+                    if(commandHistory.isEmpty()) {
+                        System.out.println("Nothing to undo.");
+                        return true;
+                    }
+                    command = (Command) commandHistory.peek();
+                    command.undo();
+                    return true;
             }
             
             if (command != null) {
                 command.execute();
+                commandHistory.add(command);
                 return true;
             }  
         } 

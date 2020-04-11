@@ -30,4 +30,9 @@ public class ExitCommand implements Command {
         control.shutdown();
         //exit gracefully..
     }
+    
+    @Override
+    public void undo() {
+        System.out.println("Can't undo the previous exit command.");
+    }
 }

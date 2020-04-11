@@ -16,5 +16,10 @@ public class DiscardCommand implements Command {
     public void execute() {
         model.changeState();
     }
+    
+    @Override
+    public void undo() {
+        System.out.println("Can't undo the previous discard command.");
+    }
 
 }

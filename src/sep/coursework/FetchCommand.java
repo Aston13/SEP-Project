@@ -53,5 +53,10 @@ public class FetchCommand implements Command {
         b.append("\n");
         return b.toString();
   }
+  
+    @Override
+    public void undo() {
+        System.out.println("Can't undo the previous fetch command.");
+    }
 
 }

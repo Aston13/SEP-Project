@@ -38,4 +38,10 @@ public class ComposeCommand implements Command {
         }
         return true;
     }
+
+    @Override
+    public void undo() {
+        new DiscardCommand(model).execute();
+        System.out.println("Compose command undone.");
+    }
 }
