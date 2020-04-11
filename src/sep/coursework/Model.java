@@ -64,15 +64,9 @@ public class Model {
     /*
      * IO related methods.
      */
-    public String getWelcomeMessage() {
-        if (user.isEmpty() || host.isEmpty()) {
-            System.out.println("User/host has not been set.");
-            //System.exit(0);
-        }
-
-        return ("\nHello " + user + "!\n"
-            + "Note:  Commands can be abbreviated to any prefix, "
-            + "e.g., fe [mytopic].\n");
+    public boolean validParameters() {
+        if (user.isEmpty() || host.isEmpty()) {return false;}
+        return true;
     }
     
     public String getDraftingOutput() {
@@ -141,5 +135,6 @@ public class Model {
         }
         return "State not set";
     }
+   
     
 }

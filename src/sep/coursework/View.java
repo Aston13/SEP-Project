@@ -15,6 +15,7 @@ import sep.mvc.AbstractView;
 public class View {
     private String userInput;
     private Controller theController;
+    private boolean running;
     private final BufferedReader reader = new BufferedReader
         (new InputStreamReader(System.in));
     
@@ -27,6 +28,7 @@ public class View {
             throw new IllegalStateException("[MVC error] "
                     + "This View has not been passed to a Controller.");
         }
+        running = true;
     }
     
     public void setController(Controller control) {
@@ -49,9 +51,16 @@ public class View {
     // Main loop: print user options, read user input and process
     public void run() throws IOException {
         
-        System.out.print(getModel().getWelcomeMessage());
+        if(getModel().validParameters()) {
+            System.out.println("\nHello " + getModel().getUser() + "!\n"
+                    + "Note:  Commands can be abbreviated to any prefix, "
+                    + "e.g., fe [mytopic].\n");
+        } else {
+            System.err.println("User/host has not been set.");
+            close();
+        }
         
-        while(true) {
+        while(running) {
             System.out.print(getModel().getStateHeader());
             
             userInput = reader.readLine();
@@ -59,16 +68,9 @@ public class View {
                 System.out.println("Could not parse command/args.");
             }
         }
+        
+        return;
     }
-    
-//    public void update(){
-//        // Checks if the user entered a valid command and invokes it if true.
-//        if (theController.isCommandValid(userInput)){ // Pass in state here?
-//            theController.invokeCommand();
-//        } else {
-//            System.out.println("Command not recognised.");
-//        }   
-//    }
     
     public void close() {
         try {
@@ -76,7 +78,7 @@ public class View {
         } catch (IOException e) {
             System.out.println("No reader to close.");
         }
-        getController().shutdown();
+        running = false;
     }
     
     public Controller getController() {

@@ -31,7 +31,7 @@ public final class Controller {
     }
     
     public void shutdown() {
-        invokeCommand("exit");
+        view.close();
     }
     
     public void addCommandWords() {
@@ -69,7 +69,7 @@ public final class Controller {
                 arguments = split.toArray(new String[split.size()]);
             }
             
-            if (arguments.length < 1) {
+            if (arguments == null || arguments.length < 1) {
                 argument = null;
             } else { 
                 argument = arguments[0];
@@ -97,7 +97,7 @@ public final class Controller {
         if(isCommandValid(userInput)) {
             switch (commandWord) {
                 case ("exit"):
-                    command = new ExitCommand(model);
+                    command = new ExitCommand(model, this);
                     break;
                 case ("fetch"):
                     command = new FetchCommand(model, argument);

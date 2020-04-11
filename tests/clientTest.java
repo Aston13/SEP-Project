@@ -1,16 +1,15 @@
-package sep.coursework;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import static org.junit.Assert.*;
 import org.junit.Test;
+import original.Client;
 
 /**
  *
  * @author Aston Turner <16052488 @ herts.ac.uk>
  */
-public class ClientTest extends TestSuite {
+public class clientTest extends Suite {
 
     @Test
     public void exit() throws UnsupportedEncodingException, IOException {
@@ -38,4 +37,3 @@ public class ClientTest extends TestSuite {
         assertEquals(expectedErrMsg, actualErrMsg);
     }
 }
-
