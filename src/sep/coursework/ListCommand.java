@@ -35,8 +35,14 @@ public class ListCommand implements Command{
     }
     
     @Override
-    public void undo() {
-        System.out.println("Can't undo the previous list command.");
+    public boolean undo() {
+        return false;
+        //System.out.println("Can't undo the previous list command.");
+    }
+    
+    @Override
+    public String getCommandString() {
+        return "List";
     }
 
 }

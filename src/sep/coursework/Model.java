@@ -1,5 +1,6 @@
 package sep.coursework;
 
+import sep.coursework.state.State;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;

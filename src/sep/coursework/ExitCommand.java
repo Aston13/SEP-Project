@@ -32,7 +32,13 @@ public class ExitCommand implements Command {
     }
     
     @Override
-    public void undo() {
-        System.out.println("Can't undo the previous exit command.");
+    public boolean undo() {
+        return false;
+        //System.out.println("Can't undo the previous exit command.");
+    }
+    
+    @Override
+    public String getCommandString() {
+        return "Exit";
     }
 }

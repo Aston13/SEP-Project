@@ -4,6 +4,7 @@ package sep.coursework;
 public interface Command {
     
     public void execute();
-    public void undo();
+    public boolean undo();
+    public String getCommandString();
     
 }

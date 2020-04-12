@@ -1,7 +1,9 @@
 package sep.coursework;
 
+import sep.coursework.state.State;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
@@ -14,7 +16,7 @@ public final class Controller {
     private String [] arguments = null;
     private String argument = null;
     private String commandWord = null;
-    private Stack commandHistory = new Stack <Command>();
+    private Stack commandHistory = new Stack <>();
     
     public Controller(Model newModel, View newView) {
         addCommandWords();
@@ -54,11 +56,6 @@ public final class Controller {
         
         State.MAIN.addCommands(mainCommands);
         State.DRAFTING.addCommands(draftCommands);
-
-//        commands.put("list", new ListCommand());
-//        commands.put("discard", new DiscardCommand());
-//        commands.put("undo", new UndoCommand());
-//        commands.put("topic, new TopicCommand());
     }
     
     public void extractInput (String userInput) {
@@ -131,8 +128,15 @@ public final class Controller {
                         System.out.println("Nothing to undo.");
                         return true;
                     }
+                    
                     command = (Command) commandHistory.peek();
-                    command.undo();
+                    if (command.undo()) {
+                        return true;
+                    } else {
+                        System.out.println("Can't undo the previous " + 
+                                command.getCommandString() + " command.");
+                    }
+                    
                     return true;
             }
             

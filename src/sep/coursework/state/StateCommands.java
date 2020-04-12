@@ -1,4 +1,4 @@
-package sep.coursework;
+package sep.coursework.state;
 
 import java.util.List;
 

@@ -27,8 +27,9 @@ public class BodyCommand implements Command {
     }
     
     @Override
-    public void undo() {
+    public boolean undo() {
         System.out.println(model.removeDraftLine());
+        return true;
     }
     
     public boolean isBodyValid() {
@@ -39,6 +40,11 @@ public class BodyCommand implements Command {
             return false;
         }
         return true;
+    }
+    
+    @Override
+    public String getCommandString() {
+        return "Body";
     }
     
     
