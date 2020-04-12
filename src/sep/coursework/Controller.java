@@ -4,6 +4,7 @@ import sep.coursework.command.*;
 import sep.coursework.state.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
@@ -16,7 +17,8 @@ public final class Controller {
     private String [] arguments = null;
     private String argument = null;
     private String commandWord = null;
-    private Stack commandHistory = new Stack <>();
+    private Stack commandHistory = new Stack <Command>();
+    private HashMap<Command, String> commandData = new HashMap<>();
     
     public Controller(Model newModel, View newView) {
         addCommandWords();
@@ -133,12 +135,15 @@ public final class Controller {
                         return true;
                     }
                     
-                    command = (Command) commandHistory.peek();
+                    command = (Command) commandHistory.pop();
                     if (command.undo()) {
+                        System.out.println("The previous " +  
+                                commandData.get(command) +
+                                " command was undone.");
                         return true;
                     } else {
                         System.out.println("Can't undo the previous " + 
-                                command.getCommandString() + " command.");
+                                commandData.get(command) + " command.");
                     }
                     
                     return true;
@@ -146,6 +151,7 @@ public final class Controller {
             
             if (command != null) {
                 command.execute();
+                commandData.put(command, commandWord);
                 commandHistory.add(command);
                 return true;
             }  

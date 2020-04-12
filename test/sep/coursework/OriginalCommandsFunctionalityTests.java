@@ -10,7 +10,7 @@ import sep.seeter.server.Server;
  *
  * @author Aston Turner
  */
-public class OriginalCommandsTests extends TestSuite {
+public class OriginalCommandsFunctionalityTests extends TestSuite {
 
     private Thread myThread;
     
