@@ -1,4 +1,6 @@
-package sep.coursework;
+package sep.coursework.command;
+
+import sep.coursework.Model;
 
 /**
  *

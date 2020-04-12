@@ -1,8 +1,10 @@
-package sep.coursework;
+package sep.coursework.command;
 
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sep.coursework.Controller;
+import sep.coursework.Model;
 import sep.seeter.net.message.Bye;
 
 public class ExitCommand implements Command {

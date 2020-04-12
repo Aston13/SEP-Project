@@ -19,7 +19,7 @@ public class OriginalCommandsTests extends TestSuite {
         String expectedOutput = "> Could not parse command/args.";
         
         provideInput("  \rexit");
-        Client.main(new String[] {"foo", "bar", "8888"});
+        Client.main(super.getClientArgs());
         
         assertEquals(expectedOutput, (getOutLine(6)));
     }
@@ -29,7 +29,7 @@ public class OriginalCommandsTests extends TestSuite {
         String expectedOutput = "> Could not parse command/args.";
         
         provideInput("ahg3254aglj\nexit");
-        Client.main(new String[] {"foo", "bar", "8888"});
+        Client.main(super.getClientArgs());
         
         assertEquals(expectedOutput, (getOutLine(6)));
     }
@@ -39,7 +39,7 @@ public class OriginalCommandsTests extends TestSuite {
         String expectedOutput = "> The fetch command requires a topic.";
         
         provideInput("fe\nexit");
-        Client.main(new String[] {"foo", "bar", "8888"});
+        Client.main(super.getClientArgs());
         
         assertEquals(expectedOutput, (getOutLine(6)));
     }
@@ -49,7 +49,7 @@ public class OriginalCommandsTests extends TestSuite {
         String expectedOutput = "> The fetch command requires a topic.";
         
         provideInput("fetch\nexit");
-        Client.main(new String[] {"foo", "bar", "8888"});
+        Client.main(super.getClientArgs());
         
         assertEquals(expectedOutput, (getOutLine(6)));
     }
@@ -64,7 +64,7 @@ public class OriginalCommandsTests extends TestSuite {
          
         provideInput("fetch mytopic\nexit");
         
-        Client.main(new String[] {"foo", "localhost", "8888"});
+        Client.main(super.getClientArgs());
         
         server.close();
         
@@ -79,9 +79,9 @@ public class OriginalCommandsTests extends TestSuite {
          
         provideInput("compose mytopic\nbody one\nsend\nexit");
         
-        Client.main(new String[] {"foo", "bar", "8888"});
+        Client.main(super.getClientArgs());
         server.close();
-        boolean expected = (getOutLine(14).startsWith("[Main]"));
+        boolean expected = (getOutLine(15).startsWith("[Main]"));
         
         assertEquals(expected, true);
     }
@@ -91,7 +91,7 @@ public class OriginalCommandsTests extends TestSuite {
         String expectedOutput = "> Topic name should be non-empty and not longer than 8 characters.";
         
         provideInput("compose\nexit");
-        Client.main(new String[] {"foo", "bar", "8888"});
+        Client.main(super.getClientArgs());
         
         assertEquals(expectedOutput, (getOutLine(6)));
     }
@@ -101,7 +101,7 @@ public class OriginalCommandsTests extends TestSuite {
         String expectedOutput = "Drafting: #mytop";
         
         provideInput("compose mytop\nexit");
-        Client.main(new String[] {"foo", "bar", "8888"});
+        Client.main(super.getClientArgs());
         
         assertEquals(expectedOutput, (getOutLine(7)));
     }
@@ -111,8 +111,23 @@ public class OriginalCommandsTests extends TestSuite {
         String expectedOutput = "           1  firstline"; // trim?
 
         provideInput("compose mytop\nbody first line\nexit");
-        Client.main(new String[] {"foo", "bar", "8888"});
+        Client.main(super.getClientArgs());
         
         assertEquals(expectedOutput, (getOutLine(11)));
+    }
+    
+    @Test
+    public void fetchPublishedTopicBody() throws IOException {
+        Server server = new Server(8888);
+        myThread = new Thread(() -> server.run());
+        myThread.start();
+        
+        String expectedOutput = "       Aston  publishTest"; // trim?
+
+        provideInput("compose fetTop\nbody publishTest\nsend\nfetch fetTop\nexit");
+        Client.main(super.getClientArgs());
+        server.close();
+        printOutputLines();
+        assertEquals(expectedOutput, (getOutLine(17)));
     }
 }

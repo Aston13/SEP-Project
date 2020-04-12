@@ -7,7 +7,6 @@ import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import org.junit.After;
 import org.junit.Before;
-import sep.seeter.server.Server;
 
 /**
  *
@@ -19,6 +18,12 @@ class TestSuite {
     private final PrintStream originalOut = System.out;
     private final PrintStream originalErr = System.err;
     private ByteArrayInputStream inputData;
+    private String fullOutput = "";
+    private boolean printOutput = false;
+    
+    public String[] getClientArgs() {
+        return new String[] {"Aston", "localhost", "8888"};
+    }
     
     public void provideInput(String data) {
         inputData = new ByteArrayInputStream(data.getBytes());
@@ -28,6 +33,16 @@ class TestSuite {
     public String getOutLine(int line) {
        String []dataLines = outData.toString().split("\\r?\\n");
        return dataLines[line];
+    }
+    
+    public void printOutputLines() {
+       String []dataLines = outData.toString().split("\\r?\\n");
+
+       for (String s: dataLines) {
+           fullOutput += s + "\n";
+       }
+       
+       printOutput = true;
     }
     
     public String getErrLine(int line) {
@@ -50,11 +65,10 @@ class TestSuite {
         System.setIn(new ByteArrayInputStream(("exit").getBytes("UTF-8")));
     }
     
-
-    
     @After
     public void restoreIOStreams() {
         System.setOut(originalOut);
         System.setErr(originalErr);
+        if(printOutput){System.out.println(fullOutput);}
     }
 }

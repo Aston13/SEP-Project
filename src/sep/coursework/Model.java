@@ -2,6 +2,8 @@ package sep.coursework;
 
 import sep.coursework.state.State;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -22,7 +24,8 @@ public class Model {
     private final String user;
     private final String host;
     private String draftTopic;
-    private List<String> draftLines;
+    private HashSet<String> draftTopics;
+    private final List<String> draftLines;
     private Publish publish;
     private State state;
     
@@ -31,6 +34,7 @@ public class Model {
         this.user = user;
         this.host = host;
         draftTopic = null;
+        draftTopics = new HashSet<>();
         draftLines = new LinkedList<>();
         state = State.MAIN;
     }
@@ -46,7 +50,7 @@ public class Model {
         }
     }
 
-    public Message receive() throws IOException, ClassNotFoundException {  
+    public Message receive() throws IOException, ClassNotFoundException { 
         return channel.receive();
     }
     
@@ -88,7 +92,17 @@ public class Model {
     
     public String getFormattedDraft() {
         StringBuilder b = new StringBuilder("#");
-        b.append(draftTopic);
+        if (draftTopics.size() > 1) {
+            Iterator<String> itr = draftTopics.iterator();
+            while(itr.hasNext()){
+                b.append(itr.next());
+                if (itr.hasNext()) {b.append(", #");};
+            }
+            
+        } else {
+            System.out.println("single top");
+            b.append(draftTopic);
+        }
         int i = 1;
         
             for (String x : draftLines) {
@@ -101,8 +115,9 @@ public class Model {
         return b.toString();
     }
     
-    public void resetDraftLines() {
+    public void resetDraftData() {
         draftLines.clear();
+        draftTopics.clear();
     }
     
     public void addDraftLine(String line) {
@@ -120,10 +135,20 @@ public class Model {
     
     public void setDraftTopic(String newTopic) {
         draftTopic = newTopic;
+        draftTopics.add(newTopic);
+    }
+    
+    public void addComposeTopic(String additionalTopic) {
+        draftTopics.add(additionalTopic);
     }
     
     public Publish getPublish () {
-        publish = new Publish(user, draftTopic, draftLines);
+        if (draftTopics.size() > 1) {
+            publish = new Publish(user, draftTopics, draftLines);
+        } else {
+            publish = new Publish(user, draftTopic, draftLines);
+        }
+       
         return publish;
     }
     

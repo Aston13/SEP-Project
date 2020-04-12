@@ -1,4 +1,4 @@
-package sep.coursework;
+package sep.coursework.command;
 
 /* Every Command must implement this interface */ 
 public interface Command {

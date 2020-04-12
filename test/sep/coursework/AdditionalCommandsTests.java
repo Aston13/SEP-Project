@@ -21,26 +21,27 @@ public class AdditionalCommandsTests extends TestSuite {
          
         provideInput("compose mytopic\nbody one\ndiscard\nexit");
         
-        Client.main(new String[] {"foo", "bar", "8888"});
+        Client.main(super.getClientArgs());
         server.close();
         boolean expected = (getOutLine(14).startsWith("[Main]"));
         
         assertEquals(expected, true);
     }
     
-//    @Test
-//    public void listTopics() throws IOException {
-//        Server server = new Server(8888);
-//        myThread = new Thread(() -> server.run());
-//        myThread.start();
-//         
-//        String expected = "Topics:";
-//        provideInput("compose mytopic\nbody one\nsend\nlist\nexit");
-//        
-//        Client.main(new String[] {"foo", "bar", "8888"});
-//        server.close();
-//        
-//        assertEquals(expected, getOutLine(15));
-//    }
+    @Test
+    public void listTopics() throws IOException {
+        Server server = new Server(8888);
+        myThread = new Thread(() -> server.run());
+        myThread.start();
+         
+        
+        provideInput("compose mytop\nbody aa\nsend\nlist\nexit");
+        
+        Client.main(super.getClientArgs());
+        server.close();
+        printOutputLines();
+        
+        assertEquals("> Topics: [mytop]", getOutLine(16));
+    }
  
 }

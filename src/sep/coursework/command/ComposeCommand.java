@@ -1,5 +1,6 @@
-package sep.coursework;
+package sep.coursework.command;
 
+import sep.coursework.Model;
 import sep.seeter.net.message.Message;
 
 /**
@@ -9,7 +10,7 @@ import sep.seeter.net.message.Message;
 public class ComposeCommand implements Command {
     
     private final Model model;
-    private final String topic;
+    private String topic;
 
     public ComposeCommand(Model newModel, String newTopic) {
         model = newModel;

@@ -1,9 +1,9 @@
 package sep.coursework;
 
-import sep.coursework.state.State;
+import sep.coursework.command.*;
+import sep.coursework.state.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
@@ -48,6 +48,7 @@ public final class Controller {
         mainCommands.add("compose");
         mainCommands.add("list");
         
+        draftCommands.add("topic");
         draftCommands.add("undo");
         draftCommands.add("exit");
         draftCommands.add("send");
@@ -122,6 +123,9 @@ public final class Controller {
                     break;
                 case ("list"):
                     command = new ListCommand(model);
+                    break;
+                case ("topic"):
+                    command = new TopicCommand(model, argument);
                     break;
                 case("undo"):
                     if(commandHistory.isEmpty()) {

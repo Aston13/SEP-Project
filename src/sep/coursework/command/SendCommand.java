@@ -1,8 +1,9 @@
-package sep.coursework;
+package sep.coursework.command;
 
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sep.coursework.Model;
 
 /**
  *
@@ -20,9 +21,11 @@ public class SendCommand implements Command {
     public void execute() {
         try {
             model.send(model.getPublish());
-            model.resetDraftLines();
+            model.resetDraftData();
             model.changeState();
+            System.out.println("draft published");
         } catch (IOException ex) {
+            System.out.println("failed send");
             Logger.getLogger(SendCommand.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
