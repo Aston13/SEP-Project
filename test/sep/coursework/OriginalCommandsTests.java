@@ -87,6 +87,20 @@ public class OriginalCommandsTests extends TestSuite {
     }
     
     @Test
+    public void sendEmptyBody() throws IOException {
+        Server server = new Server(8888);
+        myThread = new Thread(() -> server.run());
+        myThread.start();
+         
+        provideInput("compose topic\nsend\nexit");
+        
+        Client.main(super.getClientArgs());
+        server.close();
+        
+        assertEquals("> Cannot send a topic with an empty body.", getOutLine(9));
+    }
+    
+    @Test
     public void composeEmpty() throws IOException {
         String expectedOutput = "> Topic name should be non-empty and not longer than 8 characters.";
         
@@ -127,7 +141,7 @@ public class OriginalCommandsTests extends TestSuite {
         provideInput("compose fetTop\nbody publishTest\nsend\nfetch fetTop\nexit");
         Client.main(super.getClientArgs());
         server.close();
-        printOutputLines();
+        
         assertEquals(expectedOutput, (getOutLine(17)));
     }
 }

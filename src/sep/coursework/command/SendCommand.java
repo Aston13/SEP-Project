@@ -19,14 +19,18 @@ public class SendCommand implements Command {
     
     @Override
     public void execute() {
-        try {
-            model.send(model.getPublish());
-            model.resetDraftData();
-            model.changeState();
-            System.out.println("draft published");
-        } catch (IOException ex) {
-            System.out.println("failed send");
-            Logger.getLogger(SendCommand.class.getName()).log(Level.SEVERE, null, ex);
+        
+        if (model.isBodyValid()) {
+            try {
+                model.send(model.getPublish());
+                model.resetDraftData();
+                model.changeState();
+                System.out.println("Draft published.");
+            } catch (IOException ex) {
+                Logger.getLogger(SendCommand.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            System.out.println("Cannot send a topic with an empty body.");
         }
     }
     

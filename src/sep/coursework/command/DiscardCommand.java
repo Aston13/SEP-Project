@@ -16,6 +16,7 @@ public class DiscardCommand implements Command {
     
     @Override
     public void execute() {
+        model.resetDraftData();
         model.changeState();
     }
     

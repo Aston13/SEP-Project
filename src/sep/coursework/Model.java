@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sep.seeter.net.channel.ClientChannel;
@@ -25,6 +26,7 @@ public class Model {
     private final String host;
     private String draftTopic;
     private HashSet<String> draftTopics;
+    private Stack<String> topicHistory;
     private final List<String> draftLines;
     private Publish publish;
     private State state;
@@ -36,6 +38,7 @@ public class Model {
         draftTopic = null;
         draftTopics = new HashSet<>();
         draftLines = new LinkedList<>();
+        topicHistory = new Stack<>();
         state = State.MAIN;
     }
 
@@ -81,6 +84,10 @@ public class Model {
         return true;
     }
     
+    public boolean isBodyValid() {
+        return(!draftLines.isEmpty());
+    }
+    
     public String getDraftingOutput() {
         return "\nDrafting: " + getFormattedDraft()
             + "\n[Drafting] Enter command: "
@@ -98,9 +105,7 @@ public class Model {
                 b.append(itr.next());
                 if (itr.hasNext()) {b.append(", #");};
             }
-            
         } else {
-            System.out.println("single top");
             b.append(draftTopic);
         }
         int i = 1;
@@ -118,6 +123,7 @@ public class Model {
     public void resetDraftData() {
         draftLines.clear();
         draftTopics.clear();
+        topicHistory.clear();
     }
     
     public void addDraftLine(String line) {
@@ -135,11 +141,22 @@ public class Model {
     
     public void setDraftTopic(String newTopic) {
         draftTopic = newTopic;
+        topicHistory.add(newTopic);
         draftTopics.add(newTopic);
     }
     
     public void addComposeTopic(String additionalTopic) {
+        topicHistory.add(additionalTopic);
         draftTopics.add(additionalTopic);
+    }
+    
+    public boolean removeAdditionalTopic() {
+        if (draftTopics.size() > 1) {
+            draftTopics.remove(topicHistory.pop());
+            return true;
+        } else {
+            return false;
+        }
     }
     
     public Publish getPublish () {
@@ -152,8 +169,9 @@ public class Model {
         return publish;
     }
     
-    /* State related methods */
-    
+    /* 
+     * State related methods
+     */
     public void changeState() {
         if (state == State.MAIN) {
             state = State.DRAFTING;
@@ -181,6 +199,4 @@ public class Model {
         }
         return "State not set";
     }
-   
-    
 }

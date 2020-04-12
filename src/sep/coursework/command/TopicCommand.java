@@ -40,7 +40,10 @@ public class TopicCommand implements Command {
 
     @Override
     public boolean undo() {
-        return true;
+        if(model.removeAdditionalTopic()) {
+            return true;
+        }
+        return false;
     }
 
     @Override

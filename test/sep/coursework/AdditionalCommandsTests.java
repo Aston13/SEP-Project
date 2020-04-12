@@ -34,14 +34,27 @@ public class AdditionalCommandsTests extends TestSuite {
         myThread = new Thread(() -> server.run());
         myThread.start();
          
-        
         provideInput("compose mytop\nbody aa\nsend\nlist\nexit");
         
         Client.main(super.getClientArgs());
         server.close();
-        printOutputLines();
         
         assertEquals("> Topics: [mytop]", getOutLine(16));
+    }
+    
+    @Test
+    public void composeAddTopic() throws IOException {
+        Server server = new Server(8888);
+        myThread = new Thread(() -> server.run());
+        myThread.start();
+         
+        provideInput("compose one\nbody 1\nsend\n compose one\nbody 2\n"
+                + "topic two\nsend\nfetch two\nexit");
+        
+        Client.main(super.getClientArgs());
+        server.close();
+        
+        assertEquals("       Aston  2", getOutLine(31));
     }
  
 }
