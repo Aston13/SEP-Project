@@ -1,12 +1,12 @@
 package sep.coursework.state;
 
-import java.util.List;
+import java.util.HashMap;
 
 /**
  *
  * @author Aston Turner
  */
 public interface StateCommands {
-    public void addCommands(List c);
-    public List getCommands();
+    public void addCommands(HashMap h);
+    public HashMap getCommands();
 }

@@ -4,9 +4,8 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import sep.mvc.AbstractView;
+import java.text.MessageFormat;
+import static sep.coursework.Client.rb;
 
 /**
  *
@@ -23,22 +22,10 @@ public class View {
     }
     
     public void init() {
-        if (theController == null) {
-            throw new IllegalStateException("[MVC error] "
-                    + "This View has not been passed to a Controller.");
-        }
         running = true;
     }
     
     public void setController(Controller control) {
-        if (control == null) {
-            throw new IllegalArgumentException(
-                    "[MVC error] Registering a null Controller.");
-        }
-        if (theController != null) {
-            Logger.getLogger(AbstractView.class.getName()).log(Level.SEVERE,
-                    "[MVC error] Controller already set.  Shutting down.");
-        }
         theController = control;
     }
     
@@ -50,11 +37,10 @@ public class View {
     public void run() throws IOException {
         
         if(getModel().validParameters()) {
-            System.out.println("\nHello " + getModel().getUser() + "!\n"
-                    + "Note:  Commands can be abbreviated to any prefix, "
-                    + "e.g., fe [mytopic].\n");
+            System.out.println(MessageFormat.format(rb.getString
+        ("welcome_message"), getModel().getUser()));
         } else {
-            System.err.println("User/host has not been set.");
+            System.err.println(rb.getString("user_host_not_set"));
             close();
         }
         
@@ -65,7 +51,7 @@ public class View {
             userInput = reader.readLine();
             
             if (!theController.invokeCommand(userInput)) {
-                System.out.println("Could not parse command/args.");
+                System.out.println(rb.getString("unrecognised_command"));
             }
         }
     }
@@ -74,16 +60,12 @@ public class View {
         try {
             reader.close();
         } catch (IOException e) {
-            System.out.println("No reader to close.");
+            System.out.println(e.getMessage());
         }
         running = false;
     }
     
     public Controller getController() {
-        if (theController == null) {
-            throw new IllegalStateException("[MVC error] "
-                    + "This View has not been bound to a Controller.");
-        }
         return theController;
     }
     

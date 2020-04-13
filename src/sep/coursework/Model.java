@@ -7,11 +7,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import sep.seeter.net.channel.ClientChannel;
 import sep.seeter.net.message.Message;
 import sep.seeter.net.message.Publish;
+import static sep.coursework.Client.rb;
 
 /* This Class acts as a receiver within the Command Pattern to implement all 
  * operations on commands including server interaction and drafting methods.
@@ -49,9 +48,9 @@ public class Model {
     public void send(Message msg) throws IOException {
         try {
             channel.send(msg);
-            System.out.println("Request processed.");
+            System.out.println(rb.getString("request_successful"));
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(rb.getString("request_unsuccessful"));
         }
     }
 
@@ -79,7 +78,7 @@ public class Model {
                 return false;
             }
         } else if (host.isEmpty()) {
-            System.out.println("Host not set.");
+            System.out.println(rb.getString("empty_host"));
             return false;
         }
         
@@ -137,7 +136,7 @@ public class Model {
             draftLines.remove(draftLines.size()-1);
             return true;
         } else {
-            System.out.println("No existing lines to remove.");
+            System.out.println(rb.getString("empty_draft_lines"));
             return false;
         }
     }

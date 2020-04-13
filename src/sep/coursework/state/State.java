@@ -1,6 +1,6 @@
 package sep.coursework.state;
 
-import java.util.List;
+import java.util.HashMap;
 
 /**
  *
@@ -9,29 +9,29 @@ import java.util.List;
 public enum State implements StateCommands {
       
     MAIN {
-        private List mainCommands;
+        private HashMap mainCommands;
         
         @Override
-        public void addCommands(List commands) {
+        public void addCommands(HashMap commands) {
             mainCommands = commands;
         }
         
         @Override
-        public List getCommands() {
+        public HashMap getCommands() {
             return mainCommands;
         }
     }, 
     
     DRAFTING {
-        private List draftCommands;
+        private HashMap draftCommands;
         
         @Override
-        public void addCommands(List commands) {
+        public void addCommands(HashMap commands) {
             draftCommands = commands;
         }
         
         @Override
-        public List getCommands() {
+        public HashMap getCommands() {
             return draftCommands;
         }
     };
