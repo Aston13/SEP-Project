@@ -23,12 +23,6 @@ public class DiscardCommand implements Command {
     @Override
     public boolean undo() {
         return false;
-        //System.out.println("Can't undo the previous discard command.");
-    }
-    
-    @Override
-    public String getCommandString() {
-        return "Discard";
     }
 
 }

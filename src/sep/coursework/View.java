@@ -16,8 +16,7 @@ public class View {
     private String userInput;
     private Controller theController;
     private boolean running;
-    private final BufferedReader reader = new BufferedReader
-        (new InputStreamReader(System.in));
+    private  BufferedReader reader;
     
     public View() {
         theController = null;
@@ -39,7 +38,6 @@ public class View {
         if (theController != null) {
             Logger.getLogger(AbstractView.class.getName()).log(Level.SEVERE,
                     "[MVC error] Controller already set.  Shutting down.");
-            //control.shutdown();
         }
         theController = control;
     }
@@ -61,15 +59,15 @@ public class View {
         }
         
         while(running) {
+            reader = new BufferedReader(new InputStreamReader(System.in));
             System.out.print(getModel().getStateHeader());
             
             userInput = reader.readLine();
+            
             if (!theController.invokeCommand(userInput)) {
                 System.out.println("Could not parse command/args.");
             }
         }
-        
-        return;
     }
     
     public void close() {

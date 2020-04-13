@@ -43,12 +43,7 @@ public class ComposeCommand implements Command {
     @Override
     public boolean undo() {
         new DiscardCommand(model).execute();
-        //System.out.println("Compose command undone.");
         return true;
     }
-    
-    @Override
-    public String getCommandString() {
-        return "Compose";
-    }
+
 }

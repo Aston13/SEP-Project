@@ -28,11 +28,14 @@ public class FetchCommand implements Command {
         if (topic != null) {
             try {
                 model.send(new SeetsReq(topic));
-                SeetsReply rep = (SeetsReply) model.receive();
-                System.out.print(formatFetched(topic, rep.users, rep.lines));
-            } catch (IOException | ClassNotFoundException ex) {
+                try {
+                    SeetsReply rep = (SeetsReply) model.receive();
+                    System.out.print(formatFetched(topic, rep.users, rep.lines));
+                } catch (IOException | ClassNotFoundException e) {
+                }
+            } catch (IOException ex) {
                 Logger.getLogger(FetchCommand.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            } 
         } else {
             System.out.println("The fetch command requires a topic.");
         }
@@ -58,12 +61,5 @@ public class FetchCommand implements Command {
     @Override
     public boolean undo() {
         return false;
-        //System.out.println("Can't undo the previous fetch command.");
     }
-    
-    @Override
-    public String getCommandString() {
-        return "Fetch";
-    }
-
 }

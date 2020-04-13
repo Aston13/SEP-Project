@@ -46,9 +46,4 @@ public class TopicCommand implements Command {
         return false;
     }
 
-    @Override
-    public String getCommandString() {
-        return "Topic";
-    }
-
 }

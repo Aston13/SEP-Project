@@ -25,7 +25,6 @@ public class SendCommand implements Command {
                 model.send(model.getPublish());
                 model.resetDraftData();
                 model.changeState();
-                System.out.println("Draft published.");
             } catch (IOException ex) {
                 Logger.getLogger(SendCommand.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -37,13 +36,6 @@ public class SendCommand implements Command {
     @Override
     public boolean undo() {
         return false;
-        //System.out.println("Can't undo the previous send command.");
     }
-
-    @Override
-    public String getCommandString() {
-        return "Send";
-    }
-    
     
 }

@@ -5,6 +5,5 @@ public interface Command {
     
     public void execute();
     public boolean undo();
-    public String getCommandString();
     
 }

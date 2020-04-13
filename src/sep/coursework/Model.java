@@ -33,6 +33,7 @@ public class Model {
     
     public Model(String user, String host, int port) {
         channel = new ClientChannel(host, port);
+        
         this.user = user;
         this.host = host;
         draftTopic = null;
@@ -48,8 +49,9 @@ public class Model {
     public void send(Message msg) throws IOException {
         try {
             channel.send(msg);
+            System.out.println("Request processed.");
         } catch (IOException ex) {
-            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -130,12 +132,13 @@ public class Model {
         draftLines.add(line);
     }
     
-    public String removeDraftLine() {
+    public boolean removeDraftLine() {
         if (!draftLines.isEmpty()) {
             draftLines.remove(draftLines.size()-1);
-            return "Line removed.";
+            return true;
         } else {
-            return "No existing lines to remove.";
+            System.out.println("No existing lines to remove.");
+            return false;
         }
     }
     

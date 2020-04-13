@@ -21,6 +21,7 @@ public class ExitCommand implements Command {
     public void execute() {
         System.out.println("Thanks for using Seeter!");
         if (model.isServerOpen()) {
+            System.out.println("true");
             try {
                 model.send(new Bye());
             } catch (IOException ex) {
@@ -37,10 +38,5 @@ public class ExitCommand implements Command {
     public boolean undo() {
         return false;
         //System.out.println("Can't undo the previous exit command.");
-    }
-    
-    @Override
-    public String getCommandString() {
-        return "Exit";
     }
 }
