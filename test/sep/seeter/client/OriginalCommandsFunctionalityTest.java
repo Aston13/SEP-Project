@@ -7,7 +7,10 @@ import org.junit.Test;
 import sep.seeter.server.Server;
 
 /**
- *
+ * This test class tests the functionality of original commands.
+ * The functionality tested is as described by the method name.
+ * 
+ * @see #printOutputLines() to display System.output of test.
  * @author Aston Turner
  */
 public class OriginalCommandsFunctionalityTest extends TestSuite {

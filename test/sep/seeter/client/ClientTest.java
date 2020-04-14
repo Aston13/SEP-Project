@@ -7,7 +7,9 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 /**
- *
+ * This test class tests the core Client class methods.
+ * 
+ * @see #printOutputLines() to display System.output of test.
  * @author Aston Turner
  */
 public class ClientTest extends TestSuite {

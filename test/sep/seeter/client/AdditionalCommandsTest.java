@@ -1,28 +1,21 @@
 package sep.seeter.client;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import sep.seeter.server.Server;
 
 /**
- *
+ * This test class tests the additionally added commands: Discard, List and 
+ * Topic.
+ * 
+ * @see #printOutputLines() to display System.output of test.
  * @author Aston Turner
  */
 public class AdditionalCommandsTest extends TestSuite {
     
     private Thread myThread;
-    
-    @Test
-    public void exit() throws UnsupportedEncodingException, IOException {
-        String input = "compose\nexit";
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF-8"));
-        System.setIn(in);
-        Client.main(new String[] {"foo", "bar", "8888"});
-    }
-  
+
     @Test
     public void discardDraft() throws IOException {
         try (Server server = new Server(8888)) {

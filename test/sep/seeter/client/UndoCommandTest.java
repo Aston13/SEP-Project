@@ -5,7 +5,9 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 /**
- *
+ * This test class tests the functionality of the additional undo command on 
+ * appropriate commands.
+ * 
  * @author Aston Turner
  */
 public class UndoCommandTest extends TestSuite {
