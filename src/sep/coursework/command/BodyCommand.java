@@ -43,7 +43,11 @@ public class BodyCommand implements Command {
                 ("body_invalid_line"), line));
             return false;
         }
-        
+        if (!line.matches("^[a-zA-Z0-9]*$")) {
+            System.out.println(MessageFormat.format(rb.getString
+                ("body_invalid_char"), line));
+            return false;
+        }
         return true;
     }
 }
