@@ -1,5 +1,6 @@
 package sep.coursework;
 
+import java.text.MessageFormat;
 import sep.coursework.command.*;
 import sep.coursework.state.*;
 import java.util.Arrays;
@@ -9,7 +10,11 @@ import java.util.Stack;
 import java.util.stream.Collectors;
 import static sep.coursework.Client.rb;
 
-/* In charge of intialising commands in a List and returning Command objects */
+/* In charge of intialising commands in a List and returning Command objects. 
+ * This class represents the Controller in the MVC architecture.
+ *
+ * @author Aston Turner
+ */
 public final class Controller {
 
     private final Model model;
@@ -17,32 +22,28 @@ public final class Controller {
     private String [] arguments = null;
     private String argument = null;
     private String commandWord = null;
-    private Stack commandHistory = new Stack <Command>();
-    private HashMap commandData = new HashMap<Command, String>();
-    private HashMap<String, Runnable> mainCommands = new HashMap<>();
-    private HashMap<String, Runnable> draftCommands = new HashMap<>();
+    private final Stack commandHistory = new Stack <>();
+    private final HashMap commandData = new HashMap<>();
+    private final HashMap<String, Runnable> mainCommands = new HashMap<>();
+    private final HashMap<String, Runnable> draftCommands = new HashMap<>();
     private Command userC; // User's entered Command.
     
     /* Initilisation of i18n Strings as set by Locale */
-    private String undo = rb.getString("command_undo");
-    private String exit = rb.getString("command_exit");
-    private String fetch = rb.getString("command_fetch");
-    private String compose = rb.getString("command_compose");
-    private String list = rb.getString("command_list");
-    private String topic = rb.getString("command_topic");
-    private String send = rb.getString("command_send");
-    private String body = rb.getString("command_body");
-    private String discard = rb.getString("command_discard");
+    private final String undo = rb.getString("command_undo");
+    private final String exit = rb.getString("command_exit");
+    private final String fetch = rb.getString("command_fetch");
+    private final String compose = rb.getString("command_compose");
+    private final String list = rb.getString("command_list");
+    private final String topic = rb.getString("command_topic");
+    private final String send = rb.getString("command_send");
+    private final String body = rb.getString("command_body");
+    private final String discard = rb.getString("command_discard");
     
     public Controller(Model newModel, View newView) {
         addCommands();
         model = newModel;
         view = newView;
         view.setController(this);
-    }
-    
-    public View getView() {
-        return view;
     }
     
     public Model getModel() {
@@ -113,19 +114,18 @@ public final class Controller {
             
         } else if (commandWord.equals(undo)) {
                     if(commandHistory.isEmpty()) {
-                        System.out.println("Nothing to undo.");
+                        System.out.println(rb.getString("undo_empty"));
                         return true;
                     }
                     
                     Command cmd = (Command) commandHistory.pop();
                     if (cmd.undo()) {
-                        System.out.println("The previous " +  
-                                commandData.get(cmd) +
-                                " command was undone.");
+                        System.out.println(MessageFormat.format(rb.getString
+                        ("undo_successful"), commandData.get(cmd)));
                         return true;
                     } else {
-                        System.out.println("Can't undo the previous " + 
-                                commandData.get(cmd) + " command.");
+                        System.out.println(MessageFormat.format(rb.getString
+                        ("undo_success"), commandData.get(cmd)));
                         return true;
                     }
             } 

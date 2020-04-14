@@ -3,13 +3,13 @@ package sep.coursework.command;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import static sep.coursework.Client.rb;
 import sep.coursework.Model;
 import sep.seeter.net.message.SeetsReply;
 import sep.seeter.net.message.SeetsReq;
 
-/**
+/* Concrete Fetch Command.
+ * This class encapsulates the Fetch command's specific data and methods.
  *
  * @author Aston Turner
  */
@@ -25,25 +25,25 @@ public class FetchCommand implements Command {
 
     @Override
     public void execute() {
-        if (topic != null) {
+        if (model.isTopicValid(topic)) {
             try {
                 model.send(new SeetsReq(topic));
                 try {
                     SeetsReply rep = (SeetsReply) model.receive();
                     System.out.print(formatFetched(topic, rep.users, rep.lines));
                 } catch (IOException | ClassNotFoundException e) {
+                    System.out.println(rb.getString("request_unsuccessful"));
                 }
             } catch (IOException ex) {
-                Logger.getLogger(FetchCommand.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(rb.getString("request_unsuccessful"));
             } 
-        } else {
-            System.out.println("The fetch command requires a topic.");
         }
     }
     
   public String formatFetched(String topic, List<String> users,
       List<String> fetched) {
-        StringBuilder b = new StringBuilder("Fetched: #");
+      
+        StringBuilder b = new StringBuilder(rb.getString("fetched"));
         b.append(topic);
         Iterator<String> it = fetched.iterator();
         

@@ -4,6 +4,12 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/* This class contains the main method for running the program, as well as
+ * the initialisation of the MVC classes and locale. 
+ *
+ * @modified Aston Turner
+ */
+
 // Must remain the main class for running the client (via main()).
 public class Client {
     

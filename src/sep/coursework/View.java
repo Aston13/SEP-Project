@@ -7,7 +7,10 @@ import java.io.InputStreamReader;
 import java.text.MessageFormat;
 import static sep.coursework.Client.rb;
 
-/**
+/* In charge of running the main program loop for taking user input and 
+ * outputting (most) UI output using the initialisated Readers. 
+ * IO data is passed to the Controller for processing (if required).
+ * This class represents the View in the MVC architecture.
  *
  * @author Aston Turner
  */
@@ -15,7 +18,7 @@ public class View {
     private String userInput;
     private Controller theController;
     private boolean running;
-    private  BufferedReader reader;
+    private BufferedReader reader;
     
     public View() {
         theController = null;

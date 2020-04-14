@@ -1,6 +1,9 @@
 package sep.coursework.command;
 
-/* Every Command must implement this interface */ 
+/* Every concrete Command must implement this interface and methods.
+ *
+ * @author Aston Turner
+ */
 public interface Command {
     
     public void execute();

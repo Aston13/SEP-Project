@@ -2,6 +2,7 @@ package sep.coursework;
 
 import sep.coursework.state.State;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -14,7 +15,7 @@ import static sep.coursework.Client.rb;
 
 /* This Class acts as a receiver within the Command Pattern to implement all 
  * operations on commands including server interaction and drafting methods.
- * This class also represents the Model in the MVC architecture.
+ * This class represents the Model in the MVC architecture.
  *
  * @author Aston Turner
  */
@@ -24,8 +25,8 @@ public class Model {
     private final String user;
     private final String host;
     private String draftTopic;
-    private HashSet<String> draftTopics;
-    private Stack<String> topicHistory;
+    private final HashSet<String> draftTopics;
+    private final Stack<String> topicHistory;
     private final List<String> draftLines;
     private Publish publish;
     private State state;
@@ -74,28 +75,47 @@ public class Model {
             try {
                 Message.isValidUserId(user);
             } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+                System.out.println(e.getMessage()); //printout
                 return false;
             }
         } else if (host.isEmpty()) {
             System.out.println(rb.getString("empty_host"));
             return false;
         }
-        
         return true;
     }
     
-    public boolean isBodyValid() {
-        return(!draftLines.isEmpty());
+    public boolean isDraftedLinesValid() {
+        for(String line: draftLines) {
+            if (line.isEmpty() || line.length() > 48) {
+                System.out.println(rb.getString("body_invalid_length"));
+                return false;
+            }
+            if (line.contains(System.getProperty("line.separator"))) {
+                System.out.println(MessageFormat.format(rb.getString
+                    ("body_invalid_line"), line));
+                return false;
+            }
+        }
+        return(true);
+    }
+    
+    public boolean isTopicValid(String topicName) {
+        if (topicName.isEmpty() || topicName.length() > 8) {
+            System.out.println(rb.getString("topic_invalid_length"));
+            return false;
+        }
+        if (!topicName.matches("^[a-zA-Z0-9]*$")) {
+            System.out.println(MessageFormat.format(rb.getString
+                ("topic_invalid_char"), topicName));
+            return false;
+        }
+        return true;
     }
     
     public String getDraftingOutput() {
-        return "\nDrafting: " + getFormattedDraft()
-            + "\n[Drafting] Enter command: "
-            + "body [mytext], "
-            + "send, "
-            + "exit"
-            + "\n> ";
+        return MessageFormat.format(rb.getString("drafting_state_header"),
+                getFormattedDraft());
     }
     
     public String getFormattedDraft() {
@@ -104,20 +124,19 @@ public class Model {
             Iterator<String> itr = draftTopics.iterator();
             while(itr.hasNext()){
                 b.append(itr.next());
-                if (itr.hasNext()) {b.append(", #");};
+                if (itr.hasNext()) {b.append(", #");}
             }
         } else {
             b.append(draftTopic);
         }
-        int i = 1;
-        
-            for (String x : draftLines) {
-                b.append("\n");
-                b.append(String.format("%12d", i++));
-                b.append("  ");
-                b.append(x);
-            }
             
+        int i = 1;
+        for (String x : draftLines) {
+            b.append("\n");
+            b.append(String.format("%12d", i++));
+            b.append("  ");
+            b.append(x);
+        }
         return b.toString();
     }
     
@@ -186,19 +205,13 @@ public class Model {
         return state;
     }
    
-    
     public String getStateHeader() {
-        
         switch (state) {
             case MAIN:
-                return "\n[Main] Enter command: "
-                + "fetch [mytopic], "
-                + "compose [mytopic], "
-                + "exit"
-                + "\n> ";
+                return rb.getString("main_state_header");
             case DRAFTING:
                 return getDraftingOutput();
         }
-        return "State not set";
+        return rb.getString("state_not_set");
     }
 }

@@ -2,7 +2,8 @@ package sep.coursework.command;
 
 import sep.coursework.Model;
 
-/**
+/* Concrete Discard Command.
+ * This class encapsulates the Discard command's specific data and methods.
  *
  * @author Aston Turner
  */

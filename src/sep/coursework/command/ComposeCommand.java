@@ -1,16 +1,16 @@
 package sep.coursework.command;
 
 import sep.coursework.Model;
-import sep.seeter.net.message.Message;
 
-/**
+/* Concrete Compose Command.
+ * This class encapsulates the Compose command's specific data and methods.
  *
  * @author Aston Turner
  */
 public class ComposeCommand implements Command {
     
     private final Model model;
-    private String topic;
+    private final String topic;
 
     public ComposeCommand(Model newModel, String newTopic) {
         model = newModel;
@@ -19,25 +19,14 @@ public class ComposeCommand implements Command {
     
     @Override
     public void execute() {
-        
         if (topic == null) {
-            isTopicValid("");
+            model.isTopicValid("");
         } else {
-            if (isTopicValid(topic)) {
+            if (model.isTopicValid(topic)) {
                 model.setDraftTopic(topic);
                 model.changeState();
             }
         }
-    }
-    
-    public boolean isTopicValid(String topicName) {
-        try {
-            Message.isValidTopic(topicName);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
-        return true;
     }
 
     @Override
@@ -45,5 +34,4 @@ public class ComposeCommand implements Command {
         new DiscardCommand(model).execute();
         return true;
     }
-
 }

@@ -1,11 +1,11 @@
 package sep.coursework.command;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import static sep.coursework.Client.rb;
 import sep.coursework.Model;
 
-/**
+/* Concrete Send Command.
+ * This class encapsulates the Send command's specific data and methods.
  *
  * @author Aston Turner
  */
@@ -19,17 +19,14 @@ public class SendCommand implements Command {
     
     @Override
     public void execute() {
-        
-        if (model.isBodyValid()) {
+        if (model.isDraftedLinesValid()) {
             try {
                 model.send(model.getPublish());
                 model.resetDraftData();
                 model.changeState();
             } catch (IOException ex) {
-                Logger.getLogger(SendCommand.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(rb.getString("request_unsuccessful"));
             }
-        } else {
-            System.out.println("Cannot send a topic with an empty body.");
         }
     }
     
@@ -37,5 +34,4 @@ public class SendCommand implements Command {
     public boolean undo() {
         return false;
     }
-    
 }

@@ -7,6 +7,11 @@ import sep.coursework.Controller;
 import sep.coursework.Model;
 import sep.seeter.net.message.Bye;
 
+/* Concrete Exit Command.
+ * This class encapsulates the Exit command's specific data and methods.
+ *
+ * @author Aston Turner
+ */
 public class ExitCommand implements Command {
     
     private final Model model;
@@ -25,11 +30,11 @@ public class ExitCommand implements Command {
             try {
                 model.send(new Bye());
             } catch (IOException ex) {
-                Logger.getLogger(ExitCommand.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ExitCommand.class.getName()).log
+                (Level.SEVERE, null, ex);
             }
         }
             
-
         control.shutdown();
         //exit gracefully..
     }
@@ -37,6 +42,5 @@ public class ExitCommand implements Command {
     @Override
     public boolean undo() {
         return false;
-        //System.out.println("Can't undo the previous exit command.");
     }
 }

@@ -1,15 +1,13 @@
 package sep.coursework.command;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import static sep.coursework.Client.rb;
 import sep.coursework.Model;
-import sep.seeter.net.message.SeetsReply;
-import sep.seeter.net.message.SeetsReq;
 import sep.seeter.net.message.TopicsReply;
 import sep.seeter.net.message.TopicsReq;
 
-/**
+/* Concrete Exit Command.
+ * This class encapsulates the Exit command's specific data and methods.
  *
  * @author Aston Turner
  */
@@ -26,22 +24,19 @@ public class ListCommand implements Command{
         try {
             model.send(new TopicsReq());
         } catch (IOException ex) {
-            Logger.getLogger(ListCommand.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(rb.getString("request_unsuccessful"));
         }
         try {
             TopicsReply t = (TopicsReply) model.receive();
-            System.out.println("Topics: " + t.topics.toString());
+            System.out.println(rb.getString("topics") + t.topics.toString());
             
         } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(ListCommand.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println(ex.getMessage());
-        }
-        
+            System.out.println(rb.getString("request_unsuccessful"));
+        } 
     }
     
     @Override
     public boolean undo() {
         return false;
     }
-
 }
