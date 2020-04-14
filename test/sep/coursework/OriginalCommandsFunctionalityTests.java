@@ -36,7 +36,8 @@ public class OriginalCommandsFunctionalityTests extends TestSuite {
     
     @Test
     public void fetchStartsWith() throws UnsupportedEncodingException, IOException {
-        String expectedOutput = "> The fetch command requires a topic.";
+        String expectedOutput = "> Topic name should be non-empty and not "
+            + "longer than 8 characters.";
         
         provideInput("fe\nexit");
         Client.main(super.getClientArgs());
@@ -46,8 +47,8 @@ public class OriginalCommandsFunctionalityTests extends TestSuite {
     
     @Test
     public void fetchEmpty() throws UnsupportedEncodingException, IOException {
-        String expectedOutput = "> The fetch command requires a topic.";
-        
+        String expectedOutput = "> Topic name should be non-empty and not "
+            + "longer than 8 characters.";
         provideInput("fetch\nexit");
         Client.main(super.getClientArgs());
         
@@ -60,7 +61,7 @@ public class OriginalCommandsFunctionalityTests extends TestSuite {
         myThread = new Thread(() -> server.run());
         myThread.start();
         
-        String expectedOutput = "> Fetched: #mytopic";
+        String expectedOutput = "> Send request processed.";
          
         provideInput("fetch mytopic\nexit");
         
@@ -86,19 +87,19 @@ public class OriginalCommandsFunctionalityTests extends TestSuite {
         assertEquals(expected, true);
     }
     
-    @Test
-    public void sendEmptyBody() throws IOException {
-        Server server = new Server(8888);
-        myThread = new Thread(() -> server.run());
-        myThread.start();
-         
-        provideInput("compose topic\nsend\nexit");
-        
-        Client.main(super.getClientArgs());
-        server.close();
-        
-        assertEquals("> Cannot send a topic with an empty body.", getOutLine(9));
-    }
+//    @Test
+//    public void sendEmptyBody() throws IOException {
+//        Server server = new Server(8888);
+//        myThread = new Thread(() -> server.run());
+//        myThread.start();
+//         
+//        provideInput("compose topic\nsend\nexit");
+//        
+//        Client.main(super.getClientArgs());
+//        server.close();
+//        
+//        assertEquals("> Cannot publish a draft with an empty body.", getOutLine(9));
+//    }
     
     @Test
     public void composeEmpty() throws IOException {
@@ -136,12 +137,15 @@ public class OriginalCommandsFunctionalityTests extends TestSuite {
         myThread = new Thread(() -> server.run());
         myThread.start();
         
-        String expectedOutput = "       Aston  publishTest"; // trim?
+        String expectedOutput = "Receive request processed.";
 
-        provideInput("compose fetTop\nbody publishTest\nsend\nfetch fetTop\nexit");
+        provideInput("compose fetTop\nbody test\nsend\nfetch fetTop\nexit");
         Client.main(super.getClientArgs());
         server.close();
         
+        printOutputLines();
+        
         assertEquals(expectedOutput, (getOutLine(17)));
     }
+    
 }

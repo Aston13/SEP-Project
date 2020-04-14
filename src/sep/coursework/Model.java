@@ -95,6 +95,11 @@ public class Model {
     }
     
     public boolean isDraftedLinesValid() {
+        if (draftLines.isEmpty()) {
+            System.out.println(rb.getString("send_invalid_empty"));
+            return false;
+        }
+        
         for(String line: draftLines) {
             if (line.isEmpty() || line.length() > 48) {
                 System.out.println(rb.getString("body_invalid_length"));
@@ -106,7 +111,7 @@ public class Model {
                 return false;
             }
         }
-        return(true);
+        return true;
     }
     
     public boolean isTopicValid(String topicName) {
@@ -190,12 +195,9 @@ public class Model {
     }
     
     public Publish getPublish () {
-        if (draftTopics.size() > 1) {
+        if (draftTopics.size() >= 1) {
             publish = new Publish(user, draftTopics, draftLines);
-        } else {
-            publish = new Publish(user, draftTopic, draftLines);
         }
-       
         return publish;
     }
     

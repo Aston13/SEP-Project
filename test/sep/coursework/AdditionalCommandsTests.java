@@ -50,7 +50,7 @@ public class AdditionalCommandsTests extends TestSuite {
         Client.main(super.getClientArgs());
         server.close();
         
-        assertEquals("> Topics: [mytop]", getOutLine(16));
+        assertEquals("Topics: [mytop]", getOutLine(18));
     }
     
     @Test
@@ -65,7 +65,7 @@ public class AdditionalCommandsTests extends TestSuite {
         Client.main(super.getClientArgs());
         server.close();
         
-        assertEquals("       Aston  2", getOutLine(31));
+        assertEquals("       Aston  2", getOutLine(33));
     }
  
 }

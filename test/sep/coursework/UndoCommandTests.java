@@ -15,7 +15,7 @@ public class UndoCommandTests extends TestSuite {
         provideInput("compose a\nbody a\ntopic b\ntopic c\nundo\nexit");
         Client.main(super.getClientArgs());
         
-        assertEquals("Drafting: #a, #b", (getOutLine(22)));
+        assertEquals("Drafting: #a, #b", (getOutLine(23)));
     }
     
     @Test
@@ -33,7 +33,7 @@ public class UndoCommandTests extends TestSuite {
         provideInput("compose a\nbody new\nundo\nexit");
         Client.main(super.getClientArgs());
         
-        assertEquals("> Line removed.", (getOutLine(13)));
+        assertEquals("> The previous body command was undone.", (getOutLine(13)));
     }
     
     @Test
