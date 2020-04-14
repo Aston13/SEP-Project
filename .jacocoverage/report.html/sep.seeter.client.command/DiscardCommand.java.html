@@ -2,7 +2,8 @@
 
 import sep.seeter.client.Model;
 
-/* Concrete Discard Command.
+/**
+ * Concrete Discard Command.
  * This class encapsulates the Discard command's specific data and methods.
  *
  * @author Aston Turner
@@ -11,19 +12,30 @@ public class DiscardCommand implements Command {
 
     private final Model model;
 
-<span class="fc" id="L14">    public DiscardCommand(Model newModel) {</span>
-<span class="fc" id="L15">        model = newModel;</span>
-<span class="fc" id="L16">    }</span>
-    
-    @Override
-    public void execute() {
-<span class="fc" id="L20">        model.resetDraftData();</span>
-<span class="fc" id="L21">        model.changeState();</span>
+    /**
+     * Class constructor.
+     * 
+     * @param newModel the &lt;code&gt;Model&lt;/code&gt; of the MVC.
+     */
+<span class="fc" id="L20">    public DiscardCommand(Model newModel) {</span>
+<span class="fc" id="L21">        model = newModel;</span>
 <span class="fc" id="L22">    }</span>
     
+    /**
+     * Clears the current draft data, and changes state from Drafting to Main.
+     */
+    @Override
+    public void execute() {
+<span class="fc" id="L29">        model.resetDraftData();</span>
+<span class="fc" id="L30">        model.changeState();</span>
+<span class="fc" id="L31">    }</span>
+    
+    /**
+     * @return False as this command cannot be undone.
+     */
     @Override
     public boolean undo() {
-<span class="nc" id="L26">        return false;</span>
+<span class="nc" id="L38">        return false;</span>
     }
 
 }

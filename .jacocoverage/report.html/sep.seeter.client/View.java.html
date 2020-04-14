@@ -7,8 +7,9 @@ import java.io.InputStreamReader;
 import java.text.MessageFormat;
 import static sep.seeter.client.Client.rb;
 
-/* In charge of running the main program loop for taking user input and 
- * outputting (most) UI output using the initialisated Readers. 
+/**
+ * In charge of running the main program loop for taking user input and 
+ * outputting (most) UI output using the initialised Readers. 
  * IO data is passed to the Controller for processing (if required).
  * This class represents the View in the MVC architecture.
  *
@@ -18,63 +19,86 @@ public class View {
     private String userInput;
     private Controller theController;
     private boolean running;
-<span class="fc" id="L21">    private BufferedReader reader = </span>
+<span class="fc" id="L22">    private BufferedReader reader = </span>
             new BufferedReader(new InputStreamReader(System.in));
     
-<span class="fc" id="L24">    public View() {</span>
-<span class="fc" id="L25">        theController = null;</span>
-<span class="fc" id="L26">    }</span>
-    
-    public void init() {
-<span class="fc" id="L29">        running = true;</span>
+    /**
+     * Class constructor.
+     */
+<span class="fc" id="L28">    public View() {</span>
+<span class="fc" id="L29">        theController = null;</span>
 <span class="fc" id="L30">    }</span>
     
+    /**
+     * Sets the variable &lt;code&gt;running&lt;/code&gt; to true, used by the 
+     * &lt;code&gt;Client.run&lt;/code&gt; method's while loop to indicate that the program 
+     * is running.
+     */
+    public void init() {
+<span class="fc" id="L38">        running = true;</span>
+<span class="fc" id="L39">    }</span>
+    
+    /**
+     * Sets the &lt;code&gt;Controller&lt;/code&gt; as part of the MVC.
+     * 
+     * @param control MVC Controller.
+     */
     public void setController(Controller control) {
-<span class="fc" id="L33">        theController = control;</span>
-<span class="fc" id="L34">    }</span>
+<span class="fc" id="L47">        theController = control;</span>
+<span class="fc" id="L48">    }</span>
     
     @SuppressFBWarnings(
             value = &quot;DM_DEFAULT_ENCODING&quot;,
             justification = &quot;When reading console, ignore default encoding warning&quot;)
 
-    // Main loop: print user options, read user input and process
+    // Main program loop.
     public void run() throws IOException {
         
-<span class="fc bfc" id="L43" title="All 2 branches covered.">        if(getModel().validParameters()) {</span>
-<span class="fc" id="L44">            System.out.println(MessageFormat.format(rb.getString</span>
-<span class="fc" id="L45">        (&quot;welcome_message&quot;), getModel().getUser()));</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        if(getModel().validParameters()) {</span>
+<span class="fc" id="L58">            System.out.println(MessageFormat.format(rb.getString</span>
+<span class="fc" id="L59">        (&quot;welcome_message&quot;), getModel().getUser()));</span>
         } else {
-<span class="fc" id="L47">            System.err.println(rb.getString(&quot;user_host_not_set&quot;));</span>
-<span class="fc" id="L48">            close();</span>
+<span class="fc" id="L61">            System.err.println(rb.getString(&quot;user_host_not_set&quot;));</span>
+<span class="fc" id="L62">            close();</span>
         }
         
-<span class="fc bfc" id="L51" title="All 2 branches covered.">        while(running) {</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        while(running) {</span>
             
-<span class="fc" id="L53">            System.out.print(getModel().getStateHeader());</span>
+<span class="fc" id="L67">            System.out.print(getModel().getStateHeader());</span>
             
-<span class="fc" id="L55">            userInput = reader.readLine();</span>
+<span class="fc" id="L69">            userInput = reader.readLine();</span>
             
-<span class="fc bfc" id="L57" title="All 2 branches covered.">            if (!theController.invokeCommand(userInput)) {</span>
-<span class="fc" id="L58">                System.out.println(rb.getString(&quot;unrecognised_command&quot;));</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">            if (!theController.invokeCommand(userInput)) {</span>
+<span class="fc" id="L72">                System.out.println(rb.getString(&quot;unrecognised_command&quot;));</span>
             }
         }
-<span class="fc" id="L61">    }</span>
+<span class="fc" id="L75">    }</span>
     
+    /**
+     * Gracefully closes the program. &lt;code&gt;running&lt;/code&gt; is set to false to 
+     * break the &lt;code&gt;Client.run&lt;/code&gt; method's loop.
+     */
     public void close() {
         try {
-<span class="fc" id="L65">            reader.close();</span>
-<span class="nc" id="L66">        } catch (IOException e) {</span>
-<span class="nc" id="L67">            System.out.println(e.getMessage());</span>
-<span class="fc" id="L68">        }</span>
-<span class="fc" id="L69">        running = false;</span>
-<span class="fc" id="L70">    }</span>
+<span class="fc" id="L83">            reader.close();</span>
+<span class="nc" id="L84">        } catch (IOException e) {</span>
+<span class="nc" id="L85">            System.out.println(e.getMessage());</span>
+<span class="fc" id="L86">        }</span>
+<span class="fc" id="L87">        running = false;</span>
+<span class="fc" id="L88">    }</span>
     
+    /**
+     * @return The bound &lt;code&gt;Controller&lt;/code&gt;.
+     */
     public Controller getController() {
-<span class="fc" id="L73">        return theController;</span>
+<span class="fc" id="L94">        return theController;</span>
     }
     
+    /**
+     * @return The bound &lt;code&gt;Model&lt;/code&gt;.
+     */
     public Model getModel() {
-<span class="fc" id="L77">        return getController().getModel();</span>
+<span class="fc" id="L101">        return getController().getModel();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

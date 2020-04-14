@@ -2,7 +2,8 @@
 
 import sep.seeter.client.Model;
 
-/* Concrete Send Command.
+/**
+ * Concrete Send Command.
  * This class encapsulates the Send command's specific data and methods.
  *
  * @author Aston Turner
@@ -11,23 +12,34 @@ public class SendCommand implements Command {
 
     private final Model model;
     
-<span class="fc" id="L14">    public SendCommand(Model newModel) {</span>
-<span class="fc" id="L15">       model = newModel;</span>
-<span class="fc" id="L16">    }</span>
+    /**
+     * Class constructor.
+     * 
+     * @param newModel the &lt;code&gt;Model&lt;/code&gt; of the MVC.
+     */
+<span class="fc" id="L20">    public SendCommand(Model newModel) {</span>
+<span class="fc" id="L21">       model = newModel;</span>
+<span class="fc" id="L22">    }</span>
     
+    /**
+     * Tries to send the current draft to the server.
+     */
     @Override
     public void execute() {
-<span class="pc bpc" id="L20" title="1 of 2 branches missed.">        if (model.isDraftedLinesValid()) {</span>
-<span class="pc bpc" id="L21" title="1 of 2 branches missed.">            if (model.send(model.getPublish())) {</span>
-<span class="fc" id="L22">                model.resetDraftData();</span>
-<span class="fc" id="L23">                model.changeState();</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        if (model.isDraftedLinesValid()) {</span>
+<span class="pc bpc" id="L30" title="1 of 2 branches missed.">            if (model.send(model.getPublish())) {</span>
+<span class="fc" id="L31">                model.resetDraftData();</span>
+<span class="fc" id="L32">                model.changeState();</span>
             }
         }
-<span class="fc" id="L26">    }</span>
+<span class="fc" id="L35">    }</span>
     
+    /**
+     * @return False as this command cannot be undone.
+     */
     @Override
     public boolean undo() {
-<span class="nc" id="L30">        return false;</span>
+<span class="nc" id="L42">        return false;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

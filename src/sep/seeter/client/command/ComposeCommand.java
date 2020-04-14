@@ -17,7 +17,7 @@ public class ComposeCommand implements Command {
      * Class constructor.
      * 
      * @param newModel the <code>Model</code> of the MVC.
-     * @param arguments entered topic name.
+     * @param newTopic entered topic name.
      */
     public ComposeCommand(Model newModel, String newTopic) {
         model = newModel;

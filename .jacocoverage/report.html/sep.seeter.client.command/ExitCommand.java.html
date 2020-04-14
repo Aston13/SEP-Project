@@ -4,7 +4,8 @@ import sep.seeter.client.Controller;
 import sep.seeter.client.Model;
 import sep.seeter.net.message.Bye;
 
-/* Concrete Exit Command.
+/**
+ * Concrete Exit Command.
  * This class encapsulates the Exit command's specific data and methods.
  *
  * @author Aston Turner
@@ -14,26 +15,37 @@ public class ExitCommand implements Command {
     private final Model model;
     private final Controller control;
     
-<span class="fc" id="L17">    public ExitCommand(Model newModel, Controller controller) {</span>
-<span class="fc" id="L18">        model = newModel;</span>
-<span class="fc" id="L19">        control = controller;</span>
-<span class="fc" id="L20">    }</span>
+    /**
+     * Class constructor.
+     * 
+     * @param newModel the &lt;code&gt;Model&lt;/code&gt; of the MVC.
+     * @param controller the &lt;code&gt;Controller&lt;/code&gt; of the MVC.
+     */
+<span class="fc" id="L24">    public ExitCommand(Model newModel, Controller controller) {</span>
+<span class="fc" id="L25">        model = newModel;</span>
+<span class="fc" id="L26">        control = controller;</span>
+<span class="fc" id="L27">    }</span>
     
+    /**
+     * Tells the &lt;code&gt;Controller&lt;/code&gt; to gracefully shutdown the program.
+     */
     @Override
     public void execute() {
-<span class="fc" id="L24">        System.out.println(&quot;Thanks for using Seeter!&quot;);</span>
-<span class="fc bfc" id="L25" title="All 2 branches covered.">        if (model.isServerOpen()) {</span>
-<span class="fc" id="L26">            System.out.println(&quot;true&quot;);</span>
-<span class="fc" id="L27">            model.send(new Bye());</span>
+<span class="fc" id="L34">        System.out.println(&quot;Thanks for using Seeter!&quot;);</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        if (model.isServerOpen()) {</span>
+<span class="fc" id="L36">            System.out.println(&quot;true&quot;);</span>
+<span class="fc" id="L37">            model.send(new Bye());</span>
         }
             
-<span class="fc" id="L30">        control.shutdown();</span>
-        //exit gracefully..
-<span class="fc" id="L32">    }</span>
+<span class="fc" id="L40">        control.shutdown();</span>
+<span class="fc" id="L41">    }</span>
     
+    /**
+     * @return False as this command cannot be undone.
+     */
     @Override
     public boolean undo() {
-<span class="nc" id="L36">        return false;</span>
+<span class="nc" id="L48">        return false;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

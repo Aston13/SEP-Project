@@ -7,7 +7,8 @@ import sep.seeter.client.Model;
 import sep.seeter.net.message.TopicsReply;
 import sep.seeter.net.message.TopicsReq;
 
-/* Concrete Exit Command.
+/**
+ * Concrete Exit Command.
  * This class encapsulates the Exit command's specific data and methods.
  *
  * @author Aston Turner
@@ -16,30 +17,41 @@ public class ListCommand implements Command{
 
     private final Model model;
     
-<span class="fc" id="L19">    public ListCommand(Model newModel) {</span>
-<span class="fc" id="L20">        model = newModel;</span>
-<span class="fc" id="L21">    }</span>
+    /**
+     * Class constructor.
+     * 
+     * @param newModel the &lt;code&gt;Model&lt;/code&gt; of the MVC.
+     */
+<span class="fc" id="L25">    public ListCommand(Model newModel) {</span>
+<span class="fc" id="L26">        model = newModel;</span>
+<span class="fc" id="L27">    }</span>
     
+    /**
+     * Lists all published topics (if any).
+     */
     @Override
     public void execute() {
-<span class="fc" id="L25">        TopicsReply rep = null;</span>
+<span class="fc" id="L34">        TopicsReply rep = null;</span>
         
-<span class="pc bpc" id="L27" title="1 of 2 branches missed.">        if (model.send(new TopicsReq())) {</span>
+<span class="pc bpc" id="L36" title="1 of 2 branches missed.">        if (model.send(new TopicsReq())) {</span>
             try {
-<span class="fc" id="L29">                rep = (TopicsReply) model.receive();</span>
-<span class="pc bpc" id="L30" title="1 of 2 branches missed.">                if (rep != null) {</span>
-<span class="fc" id="L31">                    System.out.println(rb.getString(&quot;topics&quot;)</span>
-<span class="fc" id="L32">                            + rep.topics.toString());</span>
+<span class="fc" id="L38">                rep = (TopicsReply) model.receive();</span>
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">                if (rep != null) {</span>
+<span class="fc" id="L40">                    System.out.println(rb.getString(&quot;topics&quot;)</span>
+<span class="fc" id="L41">                            + rep.topics.toString());</span>
                 }
-<span class="nc" id="L34">            } catch (ClassNotFoundException ex) {</span>
-<span class="nc" id="L35">                Logger.getLogger(ListCommand.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="fc" id="L36">            }</span>
+<span class="nc" id="L43">            } catch (ClassNotFoundException ex) {</span>
+<span class="nc" id="L44">                Logger.getLogger(ListCommand.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L45">            }</span>
         }
-<span class="fc" id="L38">    }</span>
+<span class="fc" id="L47">    }</span>
     
+    /**
+     * @return False as this command cannot be undone.
+     */
     @Override
     public boolean undo() {
-<span class="nc" id="L42">        return false;</span>
+<span class="nc" id="L54">        return false;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

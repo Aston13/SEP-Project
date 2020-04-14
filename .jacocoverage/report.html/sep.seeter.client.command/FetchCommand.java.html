@@ -9,7 +9,8 @@ import sep.seeter.client.Model;
 import sep.seeter.net.message.SeetsReply;
 import sep.seeter.net.message.SeetsReq;
 
-/* Concrete Fetch Command.
+/**
+ * Concrete Fetch Command.
  * This class encapsulates the Fetch command's specific data and methods.
  *
  * @author Aston Turner
@@ -19,52 +20,72 @@ public class FetchCommand implements Command {
     private final Model model;
     private final String topic;
     
-<span class="fc" id="L22">    public FetchCommand(Model newModel, String newTopic) {</span>
-<span class="fc" id="L23">        model = newModel;</span>
-<span class="fc" id="L24">        topic = newTopic;</span>
-<span class="fc" id="L25">    }</span>
+    /**
+     * Class constructor.
+     * 
+     * @param newModel the &lt;code&gt;Model&lt;/code&gt; of the MVC.
+     * @param newTopic the entered topic name to be fetched.
+     */
+<span class="fc" id="L29">    public FetchCommand(Model newModel, String newTopic) {</span>
+<span class="fc" id="L30">        model = newModel;</span>
+<span class="fc" id="L31">        topic = newTopic;</span>
+<span class="fc" id="L32">    }</span>
 
+    /**
+     * Fetches and outputs a topic from the server, if possible.
+     */
     @Override
     public void execute() {
-<span class="fc" id="L29">        SeetsReply rep = null;</span>
+<span class="fc" id="L39">        SeetsReply rep = null;</span>
         
-<span class="pc bpc" id="L31" title="1 of 2 branches missed.">        if (model.isTopicValid(topic)) {</span>
-<span class="pc bpc" id="L32" title="1 of 2 branches missed.">            if (model.send(new SeetsReq(topic))) {</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        if (model.isTopicValid(topic)) {</span>
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">            if (model.send(new SeetsReq(topic))) {</span>
                 try {
-<span class="fc" id="L34">                    rep = (SeetsReply) model.receive();</span>
-<span class="pc bpc" id="L35" title="1 of 2 branches missed.">                    if (rep != null) {</span>
-<span class="fc" id="L36">                        System.out.print(formatFetched(topic, </span>
+<span class="fc" id="L44">                    rep = (SeetsReply) model.receive();</span>
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">                    if (rep != null) {</span>
+<span class="fc" id="L46">                        System.out.print(formatFetched(topic, </span>
                                 rep.users, rep.lines));
                     }
-<span class="nc" id="L39">                } catch (ClassNotFoundException ex) {</span>
-<span class="nc" id="L40">                    Logger.getLogger(FetchCommand.class.getName()).</span>
-<span class="nc" id="L41">                            log(Level.SEVERE, null, ex);</span>
-<span class="fc" id="L42">                }</span>
+<span class="nc" id="L49">                } catch (ClassNotFoundException ex) {</span>
+<span class="nc" id="L50">                    Logger.getLogger(FetchCommand.class.getName()).</span>
+<span class="nc" id="L51">                            log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L52">                }</span>
             }
         }
-<span class="fc" id="L45">    }</span>
+<span class="fc" id="L55">    }</span>
     
-  public String formatFetched(String topic, List&lt;String&gt; users,
+    /**
+     * Formats a string of the fetched topic data to be outputted.
+     * 
+     * @param topic the topic name.
+     * @param users the user whom added the line to the topic.
+     * @param fetched the list of fetched lines.
+     * @return formatted &lt;code&gt;String&lt;/code&gt;.
+     */
+    public String formatFetched(String topic, List&lt;String&gt; users,
       List&lt;String&gt; fetched) {
       
-<span class="fc" id="L50">        StringBuilder b = new StringBuilder(rb.getString(&quot;fetched&quot;));</span>
-<span class="fc" id="L51">        b.append(topic);</span>
-<span class="fc" id="L52">        Iterator&lt;String&gt; it = fetched.iterator();</span>
+<span class="fc" id="L68">        StringBuilder b = new StringBuilder(rb.getString(&quot;fetched&quot;));</span>
+<span class="fc" id="L69">        b.append(topic);</span>
+<span class="fc" id="L70">        Iterator&lt;String&gt; it = fetched.iterator();</span>
         
-<span class="fc bfc" id="L54" title="All 2 branches covered.">        for (String user : users) {</span>
-<span class="fc" id="L55">            b.append(&quot;\n&quot;);</span>
-<span class="fc" id="L56">            b.append(String.format(&quot;%12s&quot;, user));</span>
-<span class="fc" id="L57">            b.append(&quot;  &quot;);</span>
-<span class="fc" id="L58">            b.append(it.next());</span>
-<span class="fc" id="L59">        }</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        for (String user : users) {</span>
+<span class="fc" id="L73">            b.append(&quot;\n&quot;);</span>
+<span class="fc" id="L74">            b.append(String.format(&quot;%12s&quot;, user));</span>
+<span class="fc" id="L75">            b.append(&quot;  &quot;);</span>
+<span class="fc" id="L76">            b.append(it.next());</span>
+<span class="fc" id="L77">        }</span>
         
-<span class="fc" id="L61">        b.append(&quot;\n&quot;);</span>
-<span class="fc" id="L62">        return b.toString();</span>
+<span class="fc" id="L79">        b.append(&quot;\n&quot;);</span>
+<span class="fc" id="L80">        return b.toString();</span>
   }
   
+    /**
+     * @return False as this command cannot be undone.
+     */
     @Override
     public boolean undo() {
-<span class="nc" id="L67">        return false;</span>
+<span class="nc" id="L88">        return false;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

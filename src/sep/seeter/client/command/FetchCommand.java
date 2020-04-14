@@ -60,7 +60,7 @@ public class FetchCommand implements Command {
      * @param topic the topic name.
      * @param users the user whom added the line to the topic.
      * @param fetched the list of fetched lines.
-     * @return
+     * @return formatted <code>String</code>.
      */
     public String formatFetched(String topic, List<String> users,
       List<String> fetched) {

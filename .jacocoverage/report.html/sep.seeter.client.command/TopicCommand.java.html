@@ -2,7 +2,8 @@
 
 import sep.seeter.client.Model;
 
-/* Concrete Topic Command.
+/**
+ * Concrete Topic Command.
  * This class encapsulates the Topic command's specific data and methods.
  *
  * @author Aston Turner
@@ -12,25 +13,40 @@ public class TopicCommand implements Command {
     private final Model model;
     private final String topic;
 
-<span class="fc" id="L15">    public TopicCommand(Model newModel, String newTopic) {</span>
-<span class="fc" id="L16">        model = newModel;</span>
-<span class="fc" id="L17">        topic = newTopic;</span>
-<span class="fc" id="L18">    }</span>
+    /**
+     * Class constructor.
+     * 
+     * @param newModel the &lt;code&gt;Model&lt;/code&gt; of the MVC.
+     * @param newTopic the topic name to add as a secondary topic.
+     */
+<span class="fc" id="L22">    public TopicCommand(Model newModel, String newTopic) {</span>
+<span class="fc" id="L23">        model = newModel;</span>
+<span class="fc" id="L24">        topic = newTopic;</span>
+<span class="fc" id="L25">    }</span>
     
+    /**
+     * Tries to add a secondary topic to the current topic draft.
+     */
     @Override
     public void execute() {
-<span class="pc bpc" id="L22" title="1 of 2 branches missed.">        if (topic == null) {</span>
-<span class="nc" id="L23">            model.isTopicValid(&quot;&quot;);</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        if (topic == null) {</span>
+<span class="nc" id="L33">            model.isTopicValid(&quot;&quot;);</span>
         } else {
-<span class="pc bpc" id="L25" title="1 of 2 branches missed.">            if (model.isTopicValid(topic)) {</span>
-<span class="fc" id="L26">                model.addComposeTopic(topic);</span>
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">            if (model.isTopicValid(topic)) {</span>
+<span class="fc" id="L36">                model.addComposeTopic(topic);</span>
             }
         }
-<span class="fc" id="L29">    }</span>
+<span class="fc" id="L39">    }</span>
     
+    /**
+     * Removes the previously added topic.
+     * 
+     * @return True if the previous &lt;code&gt;TopicCommand&lt;/code&gt; 
+     *         &lt;code&gt;execute()&lt;/code&gt; was undone.
+     */
     @Override
     public boolean undo() {
-<span class="fc" id="L33">        return model.removeAdditionalTopic();</span>
+<span class="fc" id="L49">        return model.removeAdditionalTopic();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

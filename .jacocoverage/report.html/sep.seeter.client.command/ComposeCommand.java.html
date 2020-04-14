@@ -2,7 +2,8 @@
 
 import sep.seeter.client.Model;
 
-/* Concrete Compose Command.
+/**
+ * Concrete Compose Command.
  * This class encapsulates the Compose command's specific data and methods.
  *
  * @author Aston Turner
@@ -12,27 +13,41 @@ public class ComposeCommand implements Command {
     private final Model model;
     private final String topic;
 
-<span class="fc" id="L15">    public ComposeCommand(Model newModel, String newTopic) {</span>
-<span class="fc" id="L16">        model = newModel;</span>
-<span class="fc" id="L17">        topic = newTopic;</span>
-<span class="fc" id="L18">    }</span>
+    /**
+     * Class constructor.
+     * 
+     * @param newModel the &lt;code&gt;Model&lt;/code&gt; of the MVC.
+     * @param newTopic entered topic name.
+     */
+<span class="fc" id="L22">    public ComposeCommand(Model newModel, String newTopic) {</span>
+<span class="fc" id="L23">        model = newModel;</span>
+<span class="fc" id="L24">        topic = newTopic;</span>
+<span class="fc" id="L25">    }</span>
     
+    /**
+     * Starts drafting the topic, if possible.
+     */
     @Override
     public void execute() {
-<span class="pc bpc" id="L22" title="1 of 2 branches missed.">        if (topic == null) {</span>
-<span class="nc" id="L23">            model.isTopicValid(&quot;&quot;);</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        if (topic == null) {</span>
+<span class="nc" id="L33">            model.isTopicValid(&quot;&quot;);</span>
         } else {
-<span class="fc bfc" id="L25" title="All 2 branches covered.">            if (model.isTopicValid(topic)) {</span>
-<span class="fc" id="L26">                model.setDraftTopic(topic);</span>
-<span class="fc" id="L27">                model.changeState();</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">            if (model.isTopicValid(topic)) {</span>
+<span class="fc" id="L36">                model.setDraftTopic(topic);</span>
+<span class="fc" id="L37">                model.changeState();</span>
             }
         }
-<span class="fc" id="L30">    }</span>
+<span class="fc" id="L40">    }</span>
 
+    /**
+     * Undo of the previous &lt;code&gt;ComposeCommand&lt;/code&gt; &lt;code&gt;execute()&lt;/code&gt;.
+     * 
+     * @return True if the command was undone.
+     */
     @Override
     public boolean undo() {
-<span class="nc" id="L34">        new DiscardCommand(model).execute();</span>
-<span class="nc" id="L35">        return true;</span>
+<span class="nc" id="L49">        new DiscardCommand(model).execute();</span>
+<span class="nc" id="L50">        return true;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

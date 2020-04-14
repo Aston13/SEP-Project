@@ -184,8 +184,8 @@ public class Server implements AutoCloseable {
   protected List&lt;Pair&lt;String, String&gt;&gt; getSeets(final String topic,
       final int index) {
 <span class="fc" id="L186">    synchronized (this.mutex) {</span>
-<span class="pc bpc" id="L187" title="1 of 2 branches missed.">      if (!this.db.containsKey(topic)) {</span>
-<span class="nc" id="L188">        return Collections.emptyList();</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">      if (!this.db.containsKey(topic)) {</span>
+<span class="fc" id="L188">        return Collections.emptyList();</span>
       }
 <span class="fc" id="L190">      final List&lt;Pair&lt;String, String&gt;&gt; seets = this.db.get(topic);</span>
 <span class="pc bpc" id="L191" title="1 of 2 branches missed.">      if (index &gt;= seets.size()) {</span>

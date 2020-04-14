@@ -60,7 +60,7 @@ public class Model {
      * 
      * @param msg A <code>Message</code> to send to 
      *        the <code>ClientChannel</code>.
-     * @return
+     * @return True if message was successfully sent.
      */
     public boolean send(Message msg) {
         try {
@@ -77,7 +77,7 @@ public class Model {
      * Used to communicate with the server.
      * 
      * @return A <code>Message</code> from the <code>ClientChannel</code>.
-     * @throws ClassNotFoundException
+     * @throws ClassNotFoundException for channel.receive();
      */
     public Message receive() throws ClassNotFoundException {
         Message m = null;
@@ -227,7 +227,7 @@ public class Model {
     /**
      * Sets the current drafts topic data.
      * 
-     * @param newTopic
+     * @param newTopic topic name.
      */
     public void setDraftTopic(String newTopic) {
         draftTopic = newTopic;
@@ -263,7 +263,7 @@ public class Model {
      * Gets a published topic, based upon <code>draftTopic</code>.
      *
      * @return <code>Publish</code> topic if existing,
-     *         else <code>Publish is returned as <code>null</code>;
+     *         else Publish is returned as <code>null</code>;
      */
     public Publish getPublish () {
         if (draftTopics.size() >= 1) {

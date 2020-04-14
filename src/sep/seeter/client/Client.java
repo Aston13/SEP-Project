@@ -8,7 +8,7 @@ import java.util.ResourceBundle;
  * This class contains the main method for running the program, as well as
  * the initialisation of the MVC classes and locale. 
  *
- * @modified Aston Turner
+ * @author Aston Turner
  */
 public class Client {
     
@@ -18,11 +18,12 @@ public class Client {
     private final Locale locale = new Locale("en", "GB");
     public static ResourceBundle rb;
     
+
     /**
      * Main method to be called to start the program.
      *
      * @param args Arguments required to initialise <code>Client</code>.
-     * @throws IOException
+     * @throws IOException IO errors.
      */
     public static void main(String[] args) throws IOException {
         new Client(args[0], args[1], Integer.parseInt(args[2]));
@@ -34,7 +35,7 @@ public class Client {
      * @param user the user's name.
      * @param host the host name.
      * @param port the port number.
-     * @throws IOException
+     * @throws IOException IO errors.
      */
     public Client(String user, String host, int port) throws IOException {
         rb =  ResourceBundle.getBundle(RESOURCE_PATH, locale);

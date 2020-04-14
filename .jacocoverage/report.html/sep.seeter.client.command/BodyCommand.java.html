@@ -6,7 +6,8 @@ import java.util.stream.Collectors;
 import static sep.seeter.client.Client.rb;
 import sep.seeter.client.Model;
 
-/* Concrete Body Command.
+/**
+ * Concrete Body Command.
  * This class encapsulates the Body command's specific data and methods.
  *
  * @author Aston Turner
@@ -16,39 +17,59 @@ public class BodyCommand implements Command {
     private final Model model;
     private final String line;
             
-<span class="fc" id="L19">    public BodyCommand(Model newModel, String []arguments) {</span>
-<span class="fc" id="L20">        model = newModel;</span>
-<span class="fc" id="L21">        line = Arrays.stream(arguments).collect(Collectors.joining());</span>
-<span class="fc" id="L22">    }</span>
-    
-    @Override
-    public void execute() {
-<span class="fc bfc" id="L26" title="All 2 branches covered.">        if (isBodyValid()) {</span>
-<span class="fc" id="L27">            model.addDraftLine(line);</span>
-        }
+    /**
+     * Class constructor.
+     * 
+     * @param newModel the &lt;code&gt;Model&lt;/code&gt; of the MVC.
+     * @param arguments entered arguments to add to the current draft.
+     */
+<span class="fc" id="L26">    public BodyCommand(Model newModel, String []arguments) {</span>
+<span class="fc" id="L27">        model = newModel;</span>
+<span class="fc" id="L28">        line = Arrays.stream(arguments).collect(Collectors.joining());</span>
 <span class="fc" id="L29">    }</span>
     
+    /**
+     * Adds a line to the current draft, if valid.
+     */
+    @Override
+    public void execute() {
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        if (isBodyValid()) {</span>
+<span class="fc" id="L37">            model.addDraftLine(line);</span>
+        }
+<span class="fc" id="L39">    }</span>
+    
+    /**
+     * Undo of the previous &lt;code&gt;BodyCommand&lt;/code&gt; &lt;code&gt;execute()&lt;/code&gt;.
+     * 
+     * @see #execute()
+     * @return True if a line was removed from the current draft.
+     */
     @Override
     public boolean undo() {
-<span class="fc" id="L33">        return (model.removeDraftLine());</span>
+<span class="fc" id="L49">        return (model.removeDraftLine());</span>
     }
     
+    /**
+     * Checks if a line is valid based on a rule set.
+     * 
+     * @return True if the entered line is valid.
+     */
     public boolean isBodyValid() {
-<span class="fc bfc" id="L37" title="All 4 branches covered.">        if (line.isEmpty() || line.length() &gt; 48) {</span>
-<span class="fc" id="L38">            System.out.println(rb.getString(&quot;body_invalid_length&quot;));</span>
-<span class="fc" id="L39">            return false;</span>
+<span class="fc bfc" id="L58" title="All 4 branches covered.">        if (line.isEmpty() || line.length() &gt; 48) {</span>
+<span class="fc" id="L59">            System.out.println(rb.getString(&quot;body_invalid_length&quot;));</span>
+<span class="fc" id="L60">            return false;</span>
         }
-<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        if (line.contains(System.getProperty(&quot;line.separator&quot;))) {</span>
-<span class="nc" id="L42">            System.out.println(MessageFormat.format(rb.getString</span>
-<span class="nc" id="L43">                (&quot;body_invalid_line&quot;), line));</span>
-<span class="nc" id="L44">            return false;</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">        if (line.contains(System.getProperty(&quot;line.separator&quot;))) {</span>
+<span class="nc" id="L63">            System.out.println(MessageFormat.format(rb.getString</span>
+<span class="nc" id="L64">                (&quot;body_invalid_line&quot;), line));</span>
+<span class="nc" id="L65">            return false;</span>
         }
-<span class="fc bfc" id="L46" title="All 2 branches covered.">        if (!line.matches(&quot;^[a-zA-Z0-9]*$&quot;)) {</span>
-<span class="fc" id="L47">            System.out.println(MessageFormat.format(rb.getString</span>
-<span class="fc" id="L48">                (&quot;body_invalid_char&quot;), line));</span>
-<span class="fc" id="L49">            return false;</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        if (!line.matches(&quot;^[a-zA-Z0-9]*$&quot;)) {</span>
+<span class="fc" id="L68">            System.out.println(MessageFormat.format(rb.getString</span>
+<span class="fc" id="L69">                (&quot;body_invalid_char&quot;), line));</span>
+<span class="fc" id="L70">            return false;</span>
         }
-<span class="fc" id="L51">        return true;</span>
+<span class="fc" id="L72">        return true;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

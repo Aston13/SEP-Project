@@ -41,15 +41,12 @@ public class View {
     /**
      * Sets the <code>Controller</code> as part of the MVC.
      * 
-     * @param control
+     * @param control MVC Controller.
      */
     public void setController(Controller control) {
         theController = control;
     }
     
-    /**
-     * @throws IOException
-     */
     @SuppressFBWarnings(
             value = "DM_DEFAULT_ENCODING",
             justification = "When reading console, ignore default encoding warning")
