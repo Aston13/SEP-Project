@@ -1,8 +1,9 @@
 package sep.coursework.command;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static sep.coursework.Client.rb;
 import sep.coursework.Model;
 import sep.seeter.net.message.SeetsReply;
@@ -25,18 +26,21 @@ public class FetchCommand implements Command {
 
     @Override
     public void execute() {
+        SeetsReply rep = null;
+        
         if (model.isTopicValid(topic)) {
-            try {
-                model.send(new SeetsReq(topic));
+            if (model.send(new SeetsReq(topic))) {
                 try {
-                    SeetsReply rep = (SeetsReply) model.receive();
-                    System.out.print(formatFetched(topic, rep.users, rep.lines));
-                } catch (IOException | ClassNotFoundException e) {
-                    System.out.println(rb.getString("request_unsuccessful"));
+                    rep = (SeetsReply) model.receive();
+                    if (rep != null) {
+                        System.out.print(formatFetched(topic, 
+                                rep.users, rep.lines));
+                    }
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(FetchCommand.class.getName()).
+                            log(Level.SEVERE, null, ex);
                 }
-            } catch (IOException ex) {
-                System.out.println(rb.getString("request_unsuccessful"));
-            } 
+            }
         }
     }
     

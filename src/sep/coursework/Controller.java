@@ -83,7 +83,7 @@ public final class Controller {
             }
             
             if (arguments == null || arguments.length < 1) {
-                argument = null;
+                argument = "";
             } else { 
                 argument = arguments[0];
             }
@@ -125,7 +125,7 @@ public final class Controller {
                         return true;
                     } else {
                         System.out.println(MessageFormat.format(rb.getString
-                        ("undo_success"), commandData.get(cmd)));
+                        ("undo_unsuccessful"), commandData.get(cmd)));
                         return true;
                     }
             } 

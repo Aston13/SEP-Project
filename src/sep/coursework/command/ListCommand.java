@@ -1,6 +1,7 @@
 package sep.coursework.command;
 
-import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static sep.coursework.Client.rb;
 import sep.coursework.Model;
 import sep.seeter.net.message.TopicsReply;
@@ -21,18 +22,19 @@ public class ListCommand implements Command{
     
     @Override
     public void execute() {
-        try {
-            model.send(new TopicsReq());
-        } catch (IOException ex) {
-            System.out.println(rb.getString("request_unsuccessful"));
+        TopicsReply rep = null;
+        
+        if (model.send(new TopicsReq())) {
+            try {
+                rep = (TopicsReply) model.receive();
+                if (rep != null) {
+                    System.out.println(rb.getString("topics")
+                            + rep.topics.toString());
+                }
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(ListCommand.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        try {
-            TopicsReply t = (TopicsReply) model.receive();
-            System.out.println(rb.getString("topics") + t.topics.toString());
-            
-        } catch (IOException | ClassNotFoundException ex) {
-            System.out.println(rb.getString("request_unsuccessful"));
-        } 
     }
     
     @Override

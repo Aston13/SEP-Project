@@ -1,7 +1,5 @@
 package sep.coursework.command;
 
-import java.io.IOException;
-import static sep.coursework.Client.rb;
 import sep.coursework.Model;
 
 /* Concrete Send Command.
@@ -20,12 +18,9 @@ public class SendCommand implements Command {
     @Override
     public void execute() {
         if (model.isDraftedLinesValid()) {
-            try {
-                model.send(model.getPublish());
+            if (model.send(model.getPublish())) {
                 model.resetDraftData();
                 model.changeState();
-            } catch (IOException ex) {
-                System.out.println(rb.getString("request_unsuccessful"));
             }
         }
     }

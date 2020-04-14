@@ -46,17 +46,26 @@ public class Model {
     /*
      * Server interaction related methods.
      */
-    public void send(Message msg) throws IOException {
+    public boolean send(Message msg) {
         try {
             channel.send(msg);
-            System.out.println(rb.getString("request_successful"));
+            System.out.println(rb.getString("request_send_successful"));
+            return true;
         } catch (IOException ex) {
-            System.out.println(rb.getString("request_unsuccessful"));
+            System.out.println(rb.getString("request_send_unsuccessful"));
+            return false;
         }
     }
 
-    public Message receive() throws IOException, ClassNotFoundException { 
-        return channel.receive();
+    public Message receive() throws ClassNotFoundException {
+        Message m = null;
+        try {
+            m = channel.receive();
+            System.out.println(rb.getString("request_receive_successful"));
+        } catch (IOException ex) {
+            System.out.println(rb.getString("request_receive_unsuccessful"));
+        }
+        return m;
     }
     
     public boolean isServerOpen() {
