@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Controller.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;SEP&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">sep.seeter.client</a> &gt; <span class="el_source">Controller.java</span></div><h1>Controller.java</h1><pre class="source lang-java linenums">package sep.seeter.client;
+
+import sep.seeter.client.command.ComposeCommand;
+import sep.seeter.client.command.FetchCommand;
+import sep.seeter.client.command.ListCommand;
+import sep.seeter.client.command.DiscardCommand;
+import sep.seeter.client.command.TopicCommand;
+import sep.seeter.client.command.ExitCommand;
+import sep.seeter.client.command.Command;
+import sep.seeter.client.command.BodyCommand;
+import sep.seeter.client.command.SendCommand;
+import sep.seeter.client.state.State;
+import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Stack;
+import java.util.stream.Collectors;
+import static sep.seeter.client.Client.rb;
+
+/* In charge of intialising commands in a List and returning Command objects. 
+ * This class represents the Controller in the MVC architecture.
+ *
+ * @author Aston Turner
+ */
+public final class Controller {
+
+    private final Model model;
+    private final View view;
+<span class="fc" id="L30">    private String [] arguments = null;</span>
+<span class="fc" id="L31">    private String argument = null;</span>
+<span class="fc" id="L32">    private String commandWord = null;</span>
+<span class="fc" id="L33">    private final Stack commandHistory = new Stack &lt;&gt;();</span>
+<span class="fc" id="L34">    private final HashMap commandData = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L35">    private final HashMap&lt;String, Runnable&gt; mainCommands = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L36">    private final HashMap&lt;String, Runnable&gt; draftCommands = new HashMap&lt;&gt;();</span>
+    private Command userC; // User's entered Command.
+    
+    /* Initilisation of i18n Strings as set by Locale */
+<span class="fc" id="L40">    private final String undo = rb.getString(&quot;command_undo&quot;);</span>
+<span class="fc" id="L41">    private final String exit = rb.getString(&quot;command_exit&quot;);</span>
+<span class="fc" id="L42">    private final String fetch = rb.getString(&quot;command_fetch&quot;);</span>
+<span class="fc" id="L43">    private final String compose = rb.getString(&quot;command_compose&quot;);</span>
+<span class="fc" id="L44">    private final String list = rb.getString(&quot;command_list&quot;);</span>
+<span class="fc" id="L45">    private final String topic = rb.getString(&quot;command_topic&quot;);</span>
+<span class="fc" id="L46">    private final String send = rb.getString(&quot;command_send&quot;);</span>
+<span class="fc" id="L47">    private final String body = rb.getString(&quot;command_body&quot;);</span>
+<span class="fc" id="L48">    private final String discard = rb.getString(&quot;command_discard&quot;);</span>
+    
+<span class="fc" id="L50">    public Controller(Model newModel, View newView) {</span>
+<span class="fc" id="L51">        addCommands();</span>
+<span class="fc" id="L52">        model = newModel;</span>
+<span class="fc" id="L53">        view = newView;</span>
+<span class="fc" id="L54">        view.setController(this);</span>
+<span class="fc" id="L55">    }</span>
+    
+    public Model getModel() {
+<span class="fc" id="L58">        return model;</span>
+    }
+    
+    public void shutdown() {
+<span class="fc" id="L62">        view.close();</span>
+<span class="fc" id="L63">    }</span>
+    
+    public void addCommands() {
+<span class="fc" id="L66">        mainCommands.put(exit, () -&gt; userC = new ExitCommand (model, this));</span>
+<span class="fc" id="L67">        mainCommands.put(fetch, () -&gt; userC = new FetchCommand(model, argument));</span>
+<span class="fc" id="L68">        mainCommands.put(compose, () -&gt; userC = new ComposeCommand(model, argument));</span>
+<span class="fc" id="L69">        mainCommands.put(list, () -&gt; userC = new ListCommand(model));</span>
+        
+<span class="fc" id="L71">        draftCommands.put(topic, () -&gt; userC = new TopicCommand(model, argument));</span>
+<span class="fc" id="L72">        draftCommands.put(exit, () -&gt; userC = new ExitCommand(model, this));</span>
+<span class="fc" id="L73">        draftCommands.put(send, () -&gt; userC = new SendCommand(model));</span>
+<span class="fc" id="L74">        draftCommands.put(body, () -&gt; userC = new BodyCommand(model, arguments));</span>
+<span class="fc" id="L75">        draftCommands.put(discard, () -&gt; userC = new DiscardCommand(model));</span>
+        
+<span class="fc" id="L77">        State.MAIN.addCommands(mainCommands);</span>
+<span class="fc" id="L78">        State.DRAFTING.addCommands(draftCommands);</span>
+<span class="fc" id="L79">    }</span>
+    
+    public void extractInput (String userInput) {
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">            if (userInput != null) { // Read a line of user input</span>
+                
+                /* Trim leading/trailing white space, and split words according
+                 * to spaces
+                 */
+<span class="fc" id="L87">                List&lt;String&gt; split = Arrays.stream(userInput.trim().split(&quot;\\ &quot;))</span>
+<span class="fc" id="L88">                    .map(x -&gt; x.trim()).collect(Collectors.toList());</span>
+<span class="fc" id="L89">                commandWord = split.remove(0);</span>
+<span class="fc" id="L90">                arguments = split.toArray(new String[split.size()]);</span>
+            }
+            
+<span class="pc bpc" id="L93" title="1 of 4 branches missed.">            if (arguments == null || arguments.length &lt; 1) {</span>
+<span class="fc" id="L94">                argument = &quot;&quot;;</span>
+            } else { 
+<span class="fc" id="L96">                argument = arguments[0];</span>
+            }
+<span class="fc" id="L98">    }</span>
+    
+    public boolean isExecuteCommandValid(String userInput) {
+<span class="fc" id="L101">        State state = getModel().getState();</span>
+<span class="fc" id="L102">        HashMap stateCommandMap = state.getCommands();</span>
+<span class="fc" id="L103">        userC = null;</span>
+<span class="fc" id="L104">        extractInput(userInput);</span>
+        
+<span class="pc bpc" id="L106" title="1 of 4 branches missed.">        if ((commandWord == null) || (commandWord.trim().isEmpty())){</span>
+<span class="fc" id="L107">            return false;</span>
+        } 
+
+<span class="fc" id="L110">        stateCommandMap.forEach((k, v) -&gt; {</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">            if (k.toString().startsWith(commandWord)) {((Runnable) v).run();}});</span>
+        
+<span class="fc bfc" id="L113" title="All 2 branches covered.">        return (userC != null);</span>
+    }
+        
+    public boolean invokeCommand(String userInput) {
+<span class="fc bfc" id="L117" title="All 2 branches covered.">        if (isExecuteCommandValid(userInput)) {</span>
+<span class="fc" id="L118">            userC.execute();</span>
+<span class="fc" id="L119">            commandData.put(userC, commandWord);</span>
+<span class="fc" id="L120">            commandHistory.add(userC);</span>
+<span class="fc" id="L121">            return true;</span>
+            
+<span class="fc bfc" id="L123" title="All 2 branches covered.">        } else if (commandWord.equals(undo)) {</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">                    if(commandHistory.isEmpty()) {</span>
+<span class="fc" id="L125">                        System.out.println(rb.getString(&quot;undo_empty&quot;));</span>
+<span class="fc" id="L126">                        return true;</span>
+                    }
+                    
+<span class="fc" id="L129">                    Command cmd = (Command) commandHistory.pop();</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">                    if (cmd.undo()) {</span>
+<span class="fc" id="L131">                        System.out.println(MessageFormat.format(rb.getString</span>
+<span class="fc" id="L132">                        (&quot;undo_successful&quot;), commandData.get(cmd)));</span>
+<span class="fc" id="L133">                        return true;</span>
+                    } else {
+<span class="nc" id="L135">                        System.out.println(MessageFormat.format(rb.getString</span>
+<span class="nc" id="L136">                        (&quot;undo_unsuccessful&quot;), commandData.get(cmd)));</span>
+<span class="nc" id="L137">                        return true;</span>
+                    }
+            } 
+<span class="fc" id="L140">            return false;</span>
+        }  
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

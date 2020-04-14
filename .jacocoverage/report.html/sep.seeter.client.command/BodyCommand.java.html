@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BodyCommand.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;SEP&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">sep.seeter.client.command</a> &gt; <span class="el_source">BodyCommand.java</span></div><h1>BodyCommand.java</h1><pre class="source lang-java linenums">package sep.seeter.client.command;
+
+import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+import static sep.seeter.client.Client.rb;
+import sep.seeter.client.Model;
+
+/* Concrete Body Command.
+ * This class encapsulates the Body command's specific data and methods.
+ *
+ * @author Aston Turner
+ */
+public class BodyCommand implements Command {
+    
+    private final Model model;
+    private final String line;
+            
+<span class="fc" id="L19">    public BodyCommand(Model newModel, String []arguments) {</span>
+<span class="fc" id="L20">        model = newModel;</span>
+<span class="fc" id="L21">        line = Arrays.stream(arguments).collect(Collectors.joining());</span>
+<span class="fc" id="L22">    }</span>
+    
+    @Override
+    public void execute() {
+<span class="fc bfc" id="L26" title="All 2 branches covered.">        if (isBodyValid()) {</span>
+<span class="fc" id="L27">            model.addDraftLine(line);</span>
+        }
+<span class="fc" id="L29">    }</span>
+    
+    @Override
+    public boolean undo() {
+<span class="fc" id="L33">        return (model.removeDraftLine());</span>
+    }
+    
+    public boolean isBodyValid() {
+<span class="fc bfc" id="L37" title="All 4 branches covered.">        if (line.isEmpty() || line.length() &gt; 48) {</span>
+<span class="fc" id="L38">            System.out.println(rb.getString(&quot;body_invalid_length&quot;));</span>
+<span class="fc" id="L39">            return false;</span>
+        }
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        if (line.contains(System.getProperty(&quot;line.separator&quot;))) {</span>
+<span class="nc" id="L42">            System.out.println(MessageFormat.format(rb.getString</span>
+<span class="nc" id="L43">                (&quot;body_invalid_line&quot;), line));</span>
+<span class="nc" id="L44">            return false;</span>
+        }
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        if (!line.matches(&quot;^[a-zA-Z0-9]*$&quot;)) {</span>
+<span class="fc" id="L47">            System.out.println(MessageFormat.format(rb.getString</span>
+<span class="fc" id="L48">                (&quot;body_invalid_char&quot;), line));</span>
+<span class="fc" id="L49">            return false;</span>
+        }
+<span class="fc" id="L51">        return true;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Model.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;SEP&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">sep.seeter.client</a> &gt; <span class="el_source">Model.java</span></div><h1>Model.java</h1><pre class="source lang-java linenums">package sep.seeter.client;
+
+import sep.seeter.client.state.State;
+import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Stack;
+import sep.seeter.net.channel.ClientChannel;
+import sep.seeter.net.message.Message;
+import sep.seeter.net.message.Publish;
+import static sep.seeter.client.Client.rb;
+
+/* This Class acts as a receiver within the Command Pattern to implement all 
+ * operations on commands including server interaction and drafting methods.
+ * This class represents the Model in the MVC architecture.
+ *
+ * @author Aston Turner
+ */
+public class Model {
+    
+    private final ClientChannel channel;
+    private final String user;
+    private final String host;
+    private String draftTopic;
+    private final HashSet&lt;String&gt; draftTopics;
+    private final Stack&lt;String&gt; topicHistory;
+    private final List&lt;String&gt; draftLines;
+    private Publish publish;
+    private State state;
+    
+<span class="fc" id="L34">    public Model(String user, String host, int port) {</span>
+<span class="fc" id="L35">        channel = new ClientChannel(host, port);</span>
+        
+<span class="fc" id="L37">        this.user = user;</span>
+<span class="fc" id="L38">        this.host = host;</span>
+<span class="fc" id="L39">        draftTopic = null;</span>
+<span class="fc" id="L40">        draftTopics = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L41">        draftLines = new LinkedList&lt;&gt;();</span>
+<span class="fc" id="L42">        topicHistory = new Stack&lt;&gt;();</span>
+<span class="fc" id="L43">        state = State.MAIN;</span>
+<span class="fc" id="L44">    }</span>
+
+    /*
+     * Server interaction related methods.
+     */
+    public boolean send(Message msg) {
+        try {
+<span class="fc" id="L51">            channel.send(msg);</span>
+<span class="fc" id="L52">            System.out.println(rb.getString(&quot;request_send_successful&quot;));</span>
+<span class="fc" id="L53">            return true;</span>
+<span class="nc" id="L54">        } catch (IOException ex) {</span>
+<span class="nc" id="L55">            System.out.println(rb.getString(&quot;request_send_unsuccessful&quot;));</span>
+<span class="nc" id="L56">            return false;</span>
+        }
+    }
+
+    public Message receive() throws ClassNotFoundException {
+<span class="fc" id="L61">        Message m = null;</span>
+        try {
+<span class="fc" id="L63">            m = channel.receive();</span>
+<span class="fc" id="L64">            System.out.println(rb.getString(&quot;request_receive_successful&quot;));</span>
+<span class="nc" id="L65">        } catch (IOException ex) {</span>
+<span class="nc" id="L66">            System.out.println(rb.getString(&quot;request_receive_unsuccessful&quot;));</span>
+<span class="fc" id="L67">        }</span>
+<span class="fc" id="L68">        return m;</span>
+    }
+    
+    public boolean isServerOpen() {
+<span class="fc" id="L72">        return channel.isOpen();</span>
+    }
+    
+    public String getUser() {
+<span class="fc" id="L76">        return user;</span>
+    }
+
+    /*
+     * IO related methods.
+     */
+    public boolean validParameters() {
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        if (user.isEmpty()) {</span>
+            try {
+<span class="nc" id="L85">                Message.isValidUserId(user);</span>
+<span class="fc" id="L86">            } catch (IllegalArgumentException e) {</span>
+<span class="fc" id="L87">                System.out.println(e.getMessage()); //printout</span>
+<span class="fc" id="L88">                return false;</span>
+<span class="nc" id="L89">            }</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">        } else if (host.isEmpty()) {</span>
+<span class="nc" id="L91">            System.out.println(rb.getString(&quot;empty_host&quot;));</span>
+<span class="nc" id="L92">            return false;</span>
+        }
+<span class="fc" id="L94">        return true;</span>
+    }
+    
+    public boolean isDraftedLinesValid() {
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">        if (draftLines.isEmpty()) {</span>
+<span class="nc" id="L99">            System.out.println(rb.getString(&quot;send_invalid_empty&quot;));</span>
+<span class="nc" id="L100">            return false;</span>
+        }
+        
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        for(String line: draftLines) {</span>
+<span class="pc bpc" id="L104" title="2 of 4 branches missed.">            if (line.isEmpty() || line.length() &gt; 48) {</span>
+<span class="nc" id="L105">                System.out.println(rb.getString(&quot;body_invalid_length&quot;));</span>
+<span class="nc" id="L106">                return false;</span>
+            }
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">            if (line.contains(System.getProperty(&quot;line.separator&quot;))) {</span>
+<span class="nc" id="L109">                System.out.println(MessageFormat.format(rb.getString</span>
+<span class="nc" id="L110">                    (&quot;body_invalid_line&quot;), line));</span>
+<span class="nc" id="L111">                return false;</span>
+            }
+<span class="fc" id="L113">        }</span>
+<span class="fc" id="L114">        return true;</span>
+    }
+    
+    public boolean isTopicValid(String topicName) {
+<span class="fc bfc" id="L118" title="All 4 branches covered.">        if (topicName.isEmpty() || topicName.length() &gt; 8) {</span>
+<span class="fc" id="L119">            System.out.println(rb.getString(&quot;topic_invalid_length&quot;));</span>
+<span class="fc" id="L120">            return false;</span>
+        }
+<span class="fc bfc" id="L122" title="All 2 branches covered.">        if (!topicName.matches(&quot;^[a-zA-Z0-9]*$&quot;)) {</span>
+<span class="fc" id="L123">            System.out.println(MessageFormat.format(rb.getString</span>
+<span class="fc" id="L124">                (&quot;topic_invalid_char&quot;), topicName));</span>
+<span class="fc" id="L125">            return false;</span>
+        }
+<span class="fc" id="L127">        return true;</span>
+    }
+    
+    public String getDraftingOutput() {
+<span class="fc" id="L131">        return MessageFormat.format(rb.getString(&quot;drafting_state_header&quot;),</span>
+<span class="fc" id="L132">                getFormattedDraft());</span>
+    }
+    
+    public String getFormattedDraft() {
+<span class="fc" id="L136">        StringBuilder b = new StringBuilder(&quot;#&quot;);</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">        if (draftTopics.size() &gt; 1) {</span>
+<span class="fc" id="L138">            Iterator&lt;String&gt; itr = draftTopics.iterator();</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">            while(itr.hasNext()){</span>
+<span class="fc" id="L140">                b.append(itr.next());</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">                if (itr.hasNext()) {b.append(&quot;, #&quot;);}</span>
+            }
+<span class="fc" id="L143">        } else {</span>
+<span class="fc" id="L144">            b.append(draftTopic);</span>
+        }
+            
+<span class="fc" id="L147">        int i = 1;</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">        for (String x : draftLines) {</span>
+<span class="fc" id="L149">            b.append(&quot;\n&quot;);</span>
+<span class="fc" id="L150">            b.append(String.format(&quot;%12d&quot;, i++));</span>
+<span class="fc" id="L151">            b.append(&quot;  &quot;);</span>
+<span class="fc" id="L152">            b.append(x);</span>
+<span class="fc" id="L153">        }</span>
+<span class="fc" id="L154">        return b.toString();</span>
+    }
+    
+    public void resetDraftData() {
+<span class="fc" id="L158">        draftLines.clear();</span>
+<span class="fc" id="L159">        draftTopics.clear();</span>
+<span class="fc" id="L160">        topicHistory.clear();</span>
+<span class="fc" id="L161">    }</span>
+    
+    public void addDraftLine(String line) {
+<span class="fc" id="L164">        draftLines.add(line);</span>
+<span class="fc" id="L165">    }</span>
+    
+    public boolean removeDraftLine() {
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">        if (!draftLines.isEmpty()) {</span>
+<span class="fc" id="L169">            draftLines.remove(draftLines.size()-1);</span>
+<span class="fc" id="L170">            return true;</span>
+        } else {
+<span class="nc" id="L172">            System.out.println(rb.getString(&quot;empty_draft_lines&quot;));</span>
+<span class="nc" id="L173">            return false;</span>
+        }
+    }
+    
+    public void setDraftTopic(String newTopic) {
+<span class="fc" id="L178">        draftTopic = newTopic;</span>
+<span class="fc" id="L179">        topicHistory.add(newTopic);</span>
+<span class="fc" id="L180">        draftTopics.add(newTopic);</span>
+<span class="fc" id="L181">    }</span>
+    
+    public void addComposeTopic(String additionalTopic) {
+<span class="fc" id="L184">        topicHistory.add(additionalTopic);</span>
+<span class="fc" id="L185">        draftTopics.add(additionalTopic);</span>
+<span class="fc" id="L186">    }</span>
+    
+    public boolean removeAdditionalTopic() {
+<span class="pc bpc" id="L189" title="1 of 2 branches missed.">        if (draftTopics.size() &gt; 1) {</span>
+<span class="fc" id="L190">            draftTopics.remove(topicHistory.pop());</span>
+<span class="fc" id="L191">            return true;</span>
+        } else {
+<span class="nc" id="L193">            return false;</span>
+        }
+    }
+    
+    public Publish getPublish () {
+<span class="pc bpc" id="L198" title="1 of 2 branches missed.">        if (draftTopics.size() &gt;= 1) {</span>
+<span class="fc" id="L199">            publish = new Publish(user, draftTopics, draftLines);</span>
+        }
+<span class="fc" id="L201">        return publish;</span>
+    }
+    
+    /* 
+     * State related methods
+     */
+    public void changeState() {
+<span class="fc bfc" id="L208" title="All 2 branches covered.">        if (state == State.MAIN) {</span>
+<span class="fc" id="L209">            state = State.DRAFTING;</span>
+        } else {
+<span class="fc" id="L211">            state = State.MAIN;</span>
+        }
+<span class="fc" id="L213">    }</span>
+    
+    public State getState() {
+<span class="fc" id="L216">        return state;</span>
+    }
+   
+    public String getStateHeader() {
+<span class="pc bpc" id="L220" title="1 of 3 branches missed.">        switch (state) {</span>
+            case MAIN:
+<span class="fc" id="L222">                return rb.getString(&quot;main_state_header&quot;);</span>
+            case DRAFTING:
+<span class="fc" id="L224">                return getDraftingOutput();</span>
+        }
+<span class="nc" id="L226">        return rb.getString(&quot;state_not_set&quot;);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
