@@ -18,7 +18,7 @@ public class View {
     private String userInput;
     private Controller theController;
     private boolean running;
-    private BufferedReader reader;
+    private BufferedReader reader =reader = new BufferedReader(new InputStreamReader(System.in));
     
     public View() {
         theController = null;
@@ -48,7 +48,7 @@ public class View {
         }
         
         while(running) {
-            reader = new BufferedReader(new InputStreamReader(System.in));
+            
             System.out.print(getModel().getStateHeader());
             
             userInput = reader.readLine();
