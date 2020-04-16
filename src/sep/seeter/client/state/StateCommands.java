@@ -15,7 +15,7 @@ public interface StateCommands {
      * 
      * @param h contains <code>Command</code> implementing objects.
      */
-    public void addCommands(HashMap h);
+    void addCommands(HashMap h);
 
     /**
      * Used to retrieve commands from a <code>State</code>.
@@ -23,5 +23,5 @@ public interface StateCommands {
      * @return A <code>HashMap</code> containing <code>Command</code> 
      *         implementing objects.
      */
-    public HashMap getCommands();
+    HashMap getCommands();
 }

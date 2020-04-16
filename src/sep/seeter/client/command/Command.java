@@ -10,13 +10,13 @@ public interface Command {
     /**
      * This is the main method for executing a <code>Command</code>
      */
-    public void execute();
+    void execute();
 
     /**
      * This encapsulates functionality for undo, if supported.
      * 
      * @return True if undo functionality is supported.
      */
-    public boolean undo();
+    boolean undo();
     
 }

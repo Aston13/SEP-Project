@@ -10,13 +10,13 @@ import java.util.ResourceBundle;
  *
  * @author Aston Turner
  */
-public class Client {
+public final class Client {
     
     /* Initialisation of i18n variables */
     private static final String RESOURCE_PATH = 
             "sep/seeter/client/resourcebundles/MessageBundle";
-    private final Locale locale = new Locale("en", "GB");
-    public static ResourceBundle rb;
+    public final static ResourceBundle rb =  
+            ResourceBundle.getBundle(RESOURCE_PATH, new Locale("en", "GB"));;
     
 
     /**
@@ -37,8 +37,7 @@ public class Client {
      * @param port the port number.
      * @throws IOException IO errors.
      */
-    public Client(String user, String host, int port) throws IOException {
-        rb =  ResourceBundle.getBundle(RESOURCE_PATH, locale);
+    private Client(String user, String host, int port) throws IOException {
         Model model = new Model(user, host, port);
         View view = new View();
         new Controller(model, view);

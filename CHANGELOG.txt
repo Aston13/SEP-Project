@@ -1,3 +1,11 @@
+commit 95ec9c6d9597137600e4d3fd5e51081283dcb568
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Thu Apr 16 18:18:40 2020 +0100
+
+    Added CHANGELOG.txt
+    
+    * git log output.
+
 commit ca4fa742dddefc529349cd96768de2f250e80189
 Author: Aston13 <Aston_Turner@hotmail.co.uk>
 Date:   Tue Apr 14 22:09:00 2020 +0100

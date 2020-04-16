@@ -215,12 +215,12 @@ public class Model {
      * @return True if the line was removed.
      */
     public boolean removeDraftLine() {
-        if (!draftLines.isEmpty()) {
-            draftLines.remove(draftLines.size()-1);
-            return true;
-        } else {
+        if (draftLines.isEmpty()) {
             System.out.println(rb.getString("empty_draft_lines"));
             return false;
+        } else {
+            draftLines.remove(draftLines.size()-1);
+            return true;
         }
     }
     
@@ -266,7 +266,7 @@ public class Model {
      *         else Publish is returned as <code>null</code>;
      */
     public Publish getPublish () {
-        if (draftTopics.size() >= 1) {
+        if (!draftTopics.isEmpty()) {
             publish = new Publish(user, draftTopics, draftLines);
         }
         return publish;
@@ -307,7 +307,8 @@ public class Model {
                 return rb.getString("main_state_header");
             case DRAFTING:
                 return getDraftingOutput();
+            default:
+                return rb.getString("state_not_set");
         }
-        return rb.getString("state_not_set");
     }
 }

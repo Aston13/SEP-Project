@@ -4,6 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import static sep.seeter.client.Client.rb;
 
@@ -16,18 +17,20 @@ import static sep.seeter.client.Client.rb;
  * @author Aston Turner
  */
 public class View {
-    private String userInput;
+    
     private Controller theController;
     private boolean running;
-<span class="fc" id="L22">    private BufferedReader reader = </span>
-            new BufferedReader(new InputStreamReader(System.in));
+    private final BufferedReader reader;
     
     /**
      * Class constructor.
+     * @throws java.io.UnsupportedEncodingException
      */
-<span class="fc" id="L28">    public View() {</span>
-<span class="fc" id="L29">        theController = null;</span>
-<span class="fc" id="L30">    }</span>
+<span class="fc" id="L29">    public View() throws UnsupportedEncodingException {</span>
+<span class="fc" id="L30">        this.reader = </span>
+                new BufferedReader(new InputStreamReader((System.in), &quot;UTF-8&quot;));
+<span class="fc" id="L32">        theController = null;</span>
+<span class="fc" id="L33">    }</span>
     
     /**
      * Sets the variable &lt;code&gt;running&lt;/code&gt; to true, used by the 
@@ -35,8 +38,8 @@ public class View {
      * is running.
      */
     public void init() {
-<span class="fc" id="L38">        running = true;</span>
-<span class="fc" id="L39">    }</span>
+<span class="fc" id="L41">        running = true;</span>
+<span class="fc" id="L42">    }</span>
     
     /**
      * Sets the &lt;code&gt;Controller&lt;/code&gt; as part of the MVC.
@@ -44,8 +47,8 @@ public class View {
      * @param control MVC Controller.
      */
     public void setController(Controller control) {
-<span class="fc" id="L47">        theController = control;</span>
-<span class="fc" id="L48">    }</span>
+<span class="fc" id="L50">        theController = control;</span>
+<span class="fc" id="L51">    }</span>
     
     @SuppressFBWarnings(
             value = &quot;DM_DEFAULT_ENCODING&quot;,
@@ -54,25 +57,25 @@ public class View {
     // Main program loop.
     public void run() throws IOException {
         
-<span class="fc bfc" id="L57" title="All 2 branches covered.">        if(getModel().validParameters()) {</span>
-<span class="fc" id="L58">            System.out.println(MessageFormat.format(rb.getString</span>
-<span class="fc" id="L59">        (&quot;welcome_message&quot;), getModel().getUser()));</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        if(getModel().validParameters()) {</span>
+<span class="fc" id="L61">            System.out.println(MessageFormat.format(rb.getString</span>
+<span class="fc" id="L62">        (&quot;welcome_message&quot;), getModel().getUser()));</span>
         } else {
-<span class="fc" id="L61">            System.err.println(rb.getString(&quot;user_host_not_set&quot;));</span>
-<span class="fc" id="L62">            close();</span>
+<span class="fc" id="L64">            System.err.println(rb.getString(&quot;user_host_not_set&quot;));</span>
+<span class="fc" id="L65">            close();</span>
         }
         
-<span class="fc bfc" id="L65" title="All 2 branches covered.">        while(running) {</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        while(running) {</span>
             
-<span class="fc" id="L67">            System.out.print(getModel().getStateHeader());</span>
+<span class="fc" id="L70">            System.out.print(getModel().getStateHeader());</span>
             
-<span class="fc" id="L69">            userInput = reader.readLine();</span>
+<span class="fc" id="L72">            String userInput = reader.readLine();</span>
             
-<span class="fc bfc" id="L71" title="All 2 branches covered.">            if (!theController.invokeCommand(userInput)) {</span>
-<span class="fc" id="L72">                System.out.println(rb.getString(&quot;unrecognised_command&quot;));</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">            if (!theController.invokeCommand(userInput)) {</span>
+<span class="fc" id="L75">                System.out.println(rb.getString(&quot;unrecognised_command&quot;));</span>
             }
-        }
-<span class="fc" id="L75">    }</span>
+<span class="fc" id="L77">        }</span>
+<span class="fc" id="L78">    }</span>
     
     /**
      * Gracefully closes the program. &lt;code&gt;running&lt;/code&gt; is set to false to 
@@ -80,25 +83,25 @@ public class View {
      */
     public void close() {
         try {
-<span class="fc" id="L83">            reader.close();</span>
-<span class="nc" id="L84">        } catch (IOException e) {</span>
-<span class="nc" id="L85">            System.out.println(e.getMessage());</span>
-<span class="fc" id="L86">        }</span>
-<span class="fc" id="L87">        running = false;</span>
-<span class="fc" id="L88">    }</span>
+<span class="fc" id="L86">            reader.close();</span>
+<span class="nc" id="L87">        } catch (IOException e) {</span>
+<span class="nc" id="L88">            System.out.println(e.getMessage());</span>
+<span class="fc" id="L89">        }</span>
+<span class="fc" id="L90">        running = false;</span>
+<span class="fc" id="L91">    }</span>
     
     /**
      * @return The bound &lt;code&gt;Controller&lt;/code&gt;.
      */
     public Controller getController() {
-<span class="fc" id="L94">        return theController;</span>
+<span class="fc" id="L97">        return theController;</span>
     }
     
     /**
      * @return The bound &lt;code&gt;Model&lt;/code&gt;.
      */
     public Model getModel() {
-<span class="fc" id="L101">        return getController().getModel();</span>
+<span class="fc" id="L104">        return getController().getModel();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

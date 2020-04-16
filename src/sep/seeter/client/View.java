@@ -4,6 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import static sep.seeter.client.Client.rb;
 
@@ -16,16 +17,18 @@ import static sep.seeter.client.Client.rb;
  * @author Aston Turner
  */
 public class View {
-    private String userInput;
+    
     private Controller theController;
     private boolean running;
-    private BufferedReader reader = 
-            new BufferedReader(new InputStreamReader(System.in));
+    private final BufferedReader reader;
     
     /**
      * Class constructor.
+     * @throws java.io.UnsupportedEncodingException
      */
-    public View() {
+    public View() throws UnsupportedEncodingException {
+        this.reader = 
+                new BufferedReader(new InputStreamReader((System.in), "UTF-8"));
         theController = null;
     }
     
@@ -66,7 +69,7 @@ public class View {
             
             System.out.print(getModel().getStateHeader());
             
-            userInput = reader.readLine();
+            String userInput = reader.readLine();
             
             if (!theController.invokeCommand(userInput)) {
                 System.out.println(rb.getString("unrecognised_command"));

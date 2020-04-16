@@ -16,11 +16,11 @@ import org.junit.Before;
  * @author Aston Turner
  */
 class TestSuite {
+    
     private final ByteArrayOutputStream outData = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errData = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
     private final PrintStream originalErr = System.err;
-    private ByteArrayInputStream inputData;
     private String fullOutput = "";
     private boolean printOutput = false;
     
@@ -39,7 +39,7 @@ class TestSuite {
      * @param data the input <code>String</code> to supply.
      */
     public void provideInput(String data) {
-        inputData = new ByteArrayInputStream(data.getBytes());
+        ByteArrayInputStream inputData = new ByteArrayInputStream(data.getBytes());
         System.setIn(inputData);
     }
     
