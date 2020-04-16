@@ -1,0 +1,250 @@
+commit ca4fa742dddefc529349cd96768de2f250e80189
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Tue Apr 14 22:09:00 2020 +0100
+
+    Generated JavaDoc and updated JaCoCo report
+    
+    * Generated JavaDoc and fixed small JavaDoc errors.
+    * Re-ran JaCoCo to update report.
+
+commit c9e0ed637d5766cf1c801c813e9b9cc629dbc9b1
+Author: Aston <astonoturner@gmail.com>
+Date:   Tue Apr 14 21:37:51 2020 +0100
+
+    Create README.md
+
+commit 2fef026e4d26a7e661e9f3b10961113f104f4dac
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Tue Apr 14 21:15:55 2020 +0100
+
+    Added Javadoc comments to test classes.
+
+commit 384a94d6bbb3fdf78adf1ec9defdf347e4c3bebf
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Tue Apr 14 20:44:20 2020 +0100
+
+    Added JavaDoc comments and JaCoCoverage
+    
+    * Added JaCoCoverage Plugin to Netbeans.
+    * Repackaged classes into sep.seeter.client.*.
+    * Added Javadoc comments to all sep.seeter.client.* classes.
+
+commit 97a3cd582be441df1e4616a12b5270ca62e2aceb
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Tue Apr 14 15:54:03 2020 +0100
+
+    Updated Input Validation Tests
+    
+    * Added further input validation boundary tests
+    * All tests now pass
+
+commit ade2c3e1ea9c3291084ee3560599489e1ce59d88
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Tue Apr 14 14:45:17 2020 +0100
+
+    Fixed Broken JUnit tests
+    
+    * Broken due to refactoring and chaning output Strings.
+
+commit 4f94c40aac91224d90b8d1567f572781667f5caa
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Tue Apr 14 13:59:04 2020 +0100
+
+    Refactored exception handling for i18n
+    
+    * Removed duplication of exception handling in Concrete command classes and placed the common exceptions centrally in the Controller class.
+    * Fixed some small bugs in properties file not parsing ' apostrophes
+
+commit 5d62a1a1d211b355629a08540936b5fa3728f458
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Tue Apr 14 03:02:07 2020 +0100
+
+    Fixed JUnit Error
+    
+    * Reader intialisation in View was causing an error in running JUnit tests.
+    * Moved Reader back to original place.
+
+commit 37b65d4311f4a3cc559ae171ad9255ecbb6f16ca
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Tue Apr 14 01:10:52 2020 +0100
+
+    Internationalised all Strings
+    
+    * All hardcoded Strings now retrieve a String via the initialised ResourceBundle
+
+commit 0c079201662480f2d7badbc9f3963988ff961b28
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Mon Apr 13 15:43:14 2020 +0100
+
+    Refactored Command Pattern to suit i18n
+    
+    * Commands switch case was incompatible with implementing i18n.
+    * Refactored command pattern using lambda expressions.
+    * Reduced code line count in Controller.
+    * Added i18n support for most Strings within Model and Controller.
+
+commit 0d28204772d5734afe7ffaecec785a52317c0bc8
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Mon Apr 13 01:33:47 2020 +0100
+
+    Set up resource bundle class
+
+commit ecf4306e23ace7146084ccc10c2d290ab876cbd1
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Mon Apr 13 01:24:55 2020 +0100
+
+    Added Exception Handling for unconnected Server.
+    
+    * Fetch and Send commands can trigger exceptions if the Server was not connected.
+
+commit a8a52d0d6a094aa3780e0754064eeb1a0c64a10f
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Mon Apr 13 00:16:43 2020 +0100
+
+    Added Further Validation Tests
+
+commit 9cbae07b48868096c12b05bccfe02f408fd5ef28
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Sun Apr 12 23:47:40 2020 +0100
+
+    Added Unit Tests
+    
+    Tests added for:
+    * Topic Command
+    * Undo Commands
+
+commit c1dfde9036cd22efdd849f6f4e19670df5a34bf1
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Sun Apr 12 23:03:35 2020 +0100
+
+    Added Topic Command
+    
+    * Added Topic Command Functionality.
+
+commit 2b71589cb3c2f9b99d16a704e49bdbb8e98cd5fa
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Sun Apr 12 01:10:40 2020 +0100
+
+    Added Undo UI Messages
+    
+    * Command Interface enforces getCommandString() method.
+    * Controller outputs undo messages.
+
+commit e6f4aa627774be4ea16dcaf325b38f2446eaecab
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Sun Apr 12 00:51:45 2020 +0100
+
+    Added Undo Functionality
+    
+    * Implemented Undo into the existing command pattern.
+    * Added specific Undo functionality for Body and Compose commands.
+    * Added a JUnit test class for testing Undo.
+
+commit ac9cd4b096402533ff09e5067608f00b03457e44
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Sun Apr 12 00:24:08 2020 +0100
+
+    Added Additional Commands
+    
+    * List command functionality added
+    * Discard command functionality added
+    * Appropriate tests added for above
+
+commit 0e7b69874b2b1544c3e10e2d472bce6bd373fd4d
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Sat Apr 11 22:03:22 2020 +0100
+
+    Added Empty Input Test
+
+commit ff596f4edeaf82248d03b8d7d07e724afaa1850f
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Sat Apr 11 21:40:32 2020 +0100
+
+    Additional Server Tests
+    
+    * Further refactored JUnit Classes
+    * Added a TestSuite class
+    * Implemented server interaction within appropriate JUnits
+    * Finished/Fixed SendCommand (was sending an empty Publish).
+    * Added some exception handling throughout classes
+
+commit bb998becff7218c2a073053bd2fcb9bca3295226
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Sat Apr 11 01:12:51 2020 +0100
+
+    Refactored Test Suite
+    
+    Refactored Client and Command tests prior to adding additional commands and functionality.
+
+commit 0505de488ea6fb3eab1fb9f2bc8beef2315ffe25
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Tue Apr 7 02:22:05 2020 +0100
+
+    MVC Restructure of Code
+    
+    * Classes have been restructured into an MVC architecture
+    * State enum has been added, along with a StateCommands interface
+    * Commands are added to appropriate state list in Controller.
+    * Main loop refactored within View
+    * Client class has been reduced to the main method and initialisation
+
+commit 846cdb978238f2367681b1ebb82893b022bcae6f
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Fri Apr 3 16:38:15 2020 +0100
+
+    Further work completed on the Command Design Pattern
+    
+    Added two receiver classes.
+    Merged Parser, CommandWords and Invoker into a single class which may become the Controller in the MVC.
+
+commit da8634383eabec09557e8c654be1690ebb26d367
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Thu Apr 2 15:42:00 2020 +0100
+
+    Began implementation of Drafting Commands
+
+commit f65eaa0d699b3897aabe4143029fc4a7566572cb
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Thu Apr 2 02:38:11 2020 +0100
+
+    Added Classes Required for Command Pattern
+    
+    Invoker, Receiver
+
+commit 03270c4f96e048ff2ff7972db0c0f1c85c4eea5c
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Wed Apr 1 02:02:41 2020 +0100
+
+    First Implementation of Fetch in Command Pattern
+
+commit 5c1c2e57c7a9aec5ca493106c291e81db19f37c5
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Tue Mar 31 18:03:36 2020 +0100
+
+    State and Command Pattern Foundations
+
+commit 54dbd83b327d61adf025a704346aa7fb50e6ed3c
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Fri Mar 27 14:07:29 2020 +0000
+
+    Framework Implementation of Command Classes
+
+commit 1d98cc45949aae1b03b0856c42fc8be4e3f35a2a
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Thu Feb 27 00:40:45 2020 +0000
+
+    Added a Test Class
+
+commit 228cb57466a93e377f02fba988e21591e3ac33d8
+Author: Aston13 <Aston_Turner@hotmail.co.uk>
+Date:   Sun Feb 23 16:26:15 2020 +0000
+
+    Project built
+    
+    build folder generated
+
+commit edbad6496c7777ced8054e5f6751ab96654d2181
+Author: Aston13 <Astonoturner@gmail.com>
+Date:   Fri Feb 7 13:51:10 2020 +0000
+
+    Intial commit.

@@ -33,10 +33,8 @@ public class ExitCommand implements Command {
     public void execute() {
         System.out.println("Thanks for using Seeter!");
         if (model.isServerOpen()) {
-            System.out.println("true");
             model.send(new Bye());
         }
-            
         control.shutdown();
     }
     

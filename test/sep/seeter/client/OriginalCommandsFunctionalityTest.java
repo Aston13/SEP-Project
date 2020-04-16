@@ -65,6 +65,7 @@ public class OriginalCommandsFunctionalityTest extends TestSuite {
             provideInput("fetch mytopic\nexit");
             Client.main(super.getClientArgs());
         }
+        
         assertEquals(expectedOutput, (getOutLine(6)));
     }
     
@@ -131,7 +132,6 @@ public class OriginalCommandsFunctionalityTest extends TestSuite {
             provideInput("compose fetTop\nbody test\nsend\nfetch fetTop\nexit");
             Client.main(super.getClientArgs());
         }
-        printOutputLines();
         
         assertEquals(expectedOutput, (getOutLine(17)));
     } 

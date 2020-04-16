@@ -112,7 +112,7 @@ public class Model {
             try {
                 Message.isValidUserId(user);
             } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage()); //printout
+                System.out.println(e.getMessage());
                 return false;
             }
         } else if (host.isEmpty()) {

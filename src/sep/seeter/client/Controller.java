@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 import static sep.seeter.client.Client.rb;
 
 /**
- * In charge of initialising commands in a List and returning Command objects. 
+ * In charge of initialising commands in a Map and returning Command objects. 
  * This class represents the Controller in the MVC architecture.
  *
  * @author Aston Turner
@@ -173,7 +173,7 @@ public final class Controller {
                         ("undo_unsuccessful"), commandData.get(cmd)));
                         return true;
                     }
-            } 
-            return false;
-        }  
+        } 
+        return false;
+    }  
 }

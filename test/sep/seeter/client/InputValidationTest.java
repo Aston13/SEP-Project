@@ -156,7 +156,6 @@ public class InputValidationTest extends TestSuite {
             provideInput("compose top\nbody ^]*$\nexit");
             Client.main(super.getClientArgs());
         }
-        printOutputLines();
         
         assertEquals(expectedOutput, (getOutLine(9)));
     }  
