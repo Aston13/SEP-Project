@@ -31,4 +31,4 @@ The server can be concurrently ran via a command line by navigating to the root 
 
 ## Acknowledgments
 
-* Raymond Hu for setting up this assignment and providing me with a platform to further my learning.
+* Dr Raymond Hu and Dr Joseph Williams for setting up this assignment and providing me with a platform to further my learning.
