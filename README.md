@@ -1,4 +1,4 @@
-# SEP-Project
+# Seeter Project
 
 Project for Software Engineering Practice module; I refactored a Java client-server program using:
 
